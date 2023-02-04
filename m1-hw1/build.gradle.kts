@@ -12,3 +12,9 @@ dependencies {
 application {
     mainClass.set("ru.beeline.vafs.m1hw1.MyFirstApp")
 }
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "ru.beeline.vafs.m1hw1.MyFirstAppKt"
+    }
+}
