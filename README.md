@@ -21,6 +21,7 @@ Voice Antifraud System -- это платформа для антифрод ан
 4. Архитектура
    * [Архитектура сервиса](./docs/04-arch/01-architecture.md)
    * [Дизайн backoffice](./docs/04-arch/02-design.md)
+   * [Описание API](./docs/04-arch/03-api.md)
 
 ## Структура проекта
 
