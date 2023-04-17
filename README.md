@@ -25,7 +25,7 @@ Voice Antifraud System -- это платформа для антифрод ан
 
 ## Структура проекта
 
-### First App and Test
+## First App and Test
 
 1. [module 1 homework 1](m1-hw1) - Первая домашняя работа (первая программа и тест)
 
