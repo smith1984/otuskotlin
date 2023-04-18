@@ -37,3 +37,7 @@ Voice Antifraud System -- это платформа для антифрод ан
 3. [m2-hw3-vafs-common](m2-hw3-vafs-common) - модуль с общими классами для модулей проекта. В частности, там
    располагаются внутренние модели и контекст.
 4. [m2-hw3-vafs-mappers-v1](m2-hw3-vafs-mappers-v1) - Мапер между внутренними моделями и моделями API v1
+
+## Фреймворки и транспорты
+1. [m3-hw4-vafs-stubs](m3-hw4-vafs-stubs) - Стабы для ответов
+2. [m3-hw4-vafs-app-ktor](m3-hw4-vafs-app-ktor) - Приложение на Ktor JVM
