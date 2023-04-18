@@ -42,6 +42,7 @@ dependencies {
     implementation(ktor("auto-head-response"))
     implementation(ktor("cors"))
     implementation(ktor("default-headers"))
+    implementation(ktor("websockets"))
 
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
@@ -49,6 +50,8 @@ dependencies {
     implementation(project(":m2-hw3-vafs-common"))
     implementation(project(":m2-hw3-vafs-mappers-v1"))
     implementation(project(":m3-hw4-vafs-stubs"))
+    implementation("io.ktor:ktor-server-core-jvm:2.2.3")
+    implementation("io.ktor:ktor-server-websockets-jvm:2.2.3")
 
     testImplementation(kotlin("test-junit"))
     testImplementation(ktor("content-negotiation", prefix = "client-"))
