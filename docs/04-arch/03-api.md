@@ -6,14 +6,16 @@
 
 ## Описание сущности rule
 
-1. Id
-2. Priority
-3. listForNumberA
-4. typeOperationA
-5. listForNumberB
-6. typeOperationB
-7. typeOperationCount
-8. targetCount
-9. valueIsTrue
-10. typeOperationAB
-11. typeOperationABCount
+1. id 
+2. user
+3. description 
+4. priority 
+5. listForNumberA 
+6. typeOperationA 
+7. listForNumberB 
+8. typeOperationB 
+9. typeOperationCount 
+10. targetCount 
+11. valueIsTrue 
+12. typeOperationAB 
+13. typeOperationABCount
