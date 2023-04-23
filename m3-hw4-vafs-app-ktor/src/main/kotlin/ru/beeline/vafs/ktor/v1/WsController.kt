@@ -14,9 +14,10 @@ import ru.beeline.vafs.common.helpers.asVafsError
 import ru.beeline.vafs.common.helpers.isUpdatableCommand
 import ru.beeline.vafs.mappers.*
 import ru.beeline.vafs.stub.VafsRuleStub
+import java.util.*
 
 
-val sessions = mutableSetOf<WebSocketSession>()
+val sessions = Collections.synchronizedSet<WebSocketSession>(LinkedHashSet())
 
 suspend fun WebSocketSession.wsHandlerV1() {
     sessions.add(this)
@@ -46,7 +47,7 @@ suspend fun WebSocketSession.wsHandlerV1() {
                 outgoing.send(Frame.Text(result))
             }
         } catch (_: ClosedReceiveChannelException) {
-            sessions.clear()
+            sessions.remove(this)
         } catch (t: Throwable) {
             context.addError(t.asVafsError())
 
