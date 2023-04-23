@@ -40,4 +40,4 @@ Voice Antifraud System -- это платформа для антифрод ан
 
 ## Фреймворки и транспорты
 1. [m3-hw4-vafs-stubs](m3-hw4-vafs-stubs) - Стабы для ответов
-2. [m3-hw4-vafs-app-ktor](m3-hw4-vafs-app-ktor) - Приложение на Ktor JVM
+2. [m3-hw4-vafs-app-ktor](m3-hw4-vafs-app-ktor) - Приложение на Ktor JVM + асинхронный транспорт

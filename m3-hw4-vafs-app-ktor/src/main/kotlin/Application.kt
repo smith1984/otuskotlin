@@ -12,9 +12,12 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.defaultheaders.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
 import org.slf4j.event.Level
 import ru.beeline.vafs.api.v1.apiV1Mapper
 import ru.beeline.vafs.ktor.v1.v1Rule
+import ru.beeline.vafs.ktor.v1.wsHandlerV1
+import java.time.Duration
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -25,6 +28,8 @@ fun Application.module() {
     install(CachingHeaders)
     install(DefaultHeaders)
     install(AutoHeadResponse)
+
+    install(WebSockets)
 
     install(CORS) {
         allowMethod(HttpMethod.Post)
@@ -53,6 +58,10 @@ fun Application.module() {
 
         route("v1") {
             v1Rule()
+        }
+
+        webSocket("/v1/ws") {
+            wsHandlerV1()
         }
     }
 }
