@@ -110,7 +110,7 @@ class RuleStubWebsocketTest {
         fun searchStub() {
             val request = RuleSearchRequest(
                 requestId = "1234-9876",
-                adFilter = RuleSearchFilter(),
+                ruleFilter = RuleSearchFilter(),
                 debug = RuleDebug(
                     mode = RuleRequestDebugMode.STUB,
                     stub = RuleRequestDebugStubs.SUCCESS

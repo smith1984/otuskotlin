@@ -1,17 +1,21 @@
 #Build stage
-FROM gradle:7.6-jdk17-focal AS build
+FROM gradle:8.1.1-jdk17-alpine AS build
 
 COPY --chown=gradle:gradle . /home/gradle/src
 
 WORKDIR /home/gradle/src
 
-RUN gradle build --no-daemon
+RUN ls
+
+RUN gradle jar
+RUN tar -xvf ./m3-hw4-vafs-app-ktor/build/distributions/m3-hw4-vafs-app-ktor-0.0.1.tar
+
 
 #Final stage
 FROM openjdk:17-alpine
 
 WORKDIR /app
 
-COPY --from=build /home/gradle/src/m1-hw1/build/libs/ /app/
+COPY --from=build /home/gradle/src/m3-hw4-vafs-app-ktor-0.0.1 /app/
 
-ENTRYPOINT ["java", "-jar", "m1-hw1-0.0.1.jar"]
+ENTRYPOINT ["./bin/m3-hw4-vafs-app-ktor"]

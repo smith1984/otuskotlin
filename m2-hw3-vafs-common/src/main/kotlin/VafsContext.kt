@@ -8,6 +8,7 @@ data class VafsContext(
     var command: VafsCommand = VafsCommand.NONE,
     var state: VafsState = VafsState.NONE,
     val errors: MutableList<VafsError> = mutableListOf(),
+    var settings: VafsCorSettings = VafsCorSettings.NONE,
 
     var workMode: VafsWorkMode = VafsWorkMode.PROD,
     var stubCase: VafsStubs = VafsStubs.NONE,
@@ -16,6 +17,13 @@ data class VafsContext(
     var timeStart: Instant = Instant.NONE,
     var ruleRequest: VafsRule = VafsRule(),
     var ruleFilterRequest: VafsRuleFilter = VafsRuleFilter(),
+
+    var ruleValidating: VafsRule = VafsRule(),
+    var ruleFilterValidating: VafsRuleFilter = VafsRuleFilter(),
+
+    var ruleValidated: VafsRule = VafsRule(),
+    var ruleFilterValidated: VafsRuleFilter = VafsRuleFilter(),
+    
     var ruleResponse: VafsRule = VafsRule(),
     var rulesResponse: MutableList<VafsRule> = mutableListOf(),
 )
