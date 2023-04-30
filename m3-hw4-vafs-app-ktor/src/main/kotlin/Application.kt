@@ -15,14 +15,26 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import org.slf4j.event.Level
 import ru.beeline.vafs.api.v1.apiV1Mapper
+import ru.beeline.vafs.ktor.plugins.initAppSettings
 import ru.beeline.vafs.ktor.v1.v1Rule
 import ru.beeline.vafs.ktor.v1.wsHandlerV1
+import ru.beeline.vafs.logging.logback.LogWrapperLogback
 import java.time.Duration
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-@Suppress("unused") // Referenced in application.conf
-fun Application.module() {
+private val clazz = Application::module::class.qualifiedName ?: "Application"
+fun Application.module(appSettings: VafsAppSettings = initAppSettings()) {
+
+    install(CallLogging) {
+        level = Level.INFO
+        val lgr = appSettings
+            .corSettings
+            .loggerProvider
+            .logger(clazz) as? LogWrapperLogback
+        lgr?.logger?.also { logger = it }
+    }
+
     install(Routing)
 
     install(CachingHeaders)
@@ -43,11 +55,6 @@ fun Application.module() {
         }
     }
 
-
-    install(CallLogging) {
-        level = Level.INFO
-    }
-
     @Suppress("OPT_IN_USAGE")
     install(Locations)
 
@@ -57,7 +64,7 @@ fun Application.module() {
         }
 
         route("v1") {
-            v1Rule()
+            v1Rule(appSettings)
         }
 
         webSocket("/v1/ws") {

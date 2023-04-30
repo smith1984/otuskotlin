@@ -66,20 +66,20 @@ fun VafsContext.toTransportInit() = RuleInitResponse(
 )
 
 private fun VafsRule.toTransportRule(): RuleResponseObject = RuleResponseObject(
-    id = id.takeIf { it != VafsRuleId.NONE }?.asString(),
-    description = description.takeIf { it.isNotBlank() },
-    userId = userId.takeIf { it != VafsUserId.NONE }?.asString(),
-    permissions = permissionsOperator.toTransportRule(),
-    priority = priority.takeIf { it != 0 },
-    listForNumberA = listForNumberA.takeIf { it.isNotEmpty() },
-    typeOperationA = typeOperationA.toTransportRule(),
-    listForNumberB = listForNumberB.takeIf { it.isNotEmpty() },
-    typeOperationB = typeOperationB.toTransportRule(),
-    typeOperationCount = typeOperationCount.toTransportRule(),
-    targetCount = targetCount.takeIf { it != 0 },
-    valueIsTrue = valueIsTrue.takeIf { !it },
-    typeOperationAB = typeOperationAB.toTransportRule(),
-    typeOperationABCount = typeOperationABCount.toTransportRule(),
+        id = id.takeIf { it != VafsRuleId.NONE }?.asString(),
+        description = description.takeIf { it.isNotBlank() },
+        userId = userId.takeIf { it != VafsUserId.NONE }?.asString(),
+        permissions = permissionsOperator.toTransportRule(),
+        priority = priority.takeIf { it != 0 },
+        listForNumberA = listForNumberA.takeIf { it.isNotEmpty() },
+        typeOperationA = typeOperationA.toTransportRule(),
+        listForNumberB = listForNumberB.takeIf { it.isNotEmpty() },
+        typeOperationB = typeOperationB.toTransportRule(),
+        typeOperationCount = typeOperationCount.toTransportRule(),
+        targetCount = targetCount.takeIf { it != 0 },
+        valueIsTrue = valueIsTrue.takeIf { !it },
+        typeOperationAB = typeOperationAB.toTransportRule(),
+        typeOperationABCount = typeOperationABCount.toTransportRule(),
 )
 
 private fun Set<VafsRulePermissionOperator>.toTransportRule(): Set<RulePermissions>? = this

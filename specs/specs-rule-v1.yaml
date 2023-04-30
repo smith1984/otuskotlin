@@ -336,7 +336,7 @@ components:
         - $ref: '#/components/schemas/RuleRequestDebug'
         - type: object
           properties:
-            adFilter:
+            ruleFilter:
               $ref: '#/components/schemas/RuleSearchFilter'
 
     RuleInitResponse:

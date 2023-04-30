@@ -18,4 +18,5 @@ enum class VafsStubs {
     BAD_TYPE_OPERATION_AB_COUNT,
     CANNOT_DELETE,
     BAD_SEARCH_STRING,
+    DB_ERROR,
 }

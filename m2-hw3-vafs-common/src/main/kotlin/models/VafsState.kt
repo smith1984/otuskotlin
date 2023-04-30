@@ -4,4 +4,5 @@ enum class VafsState {
     NONE,
     RUNNING,
     FAILING,
+    FINISHING,
 }

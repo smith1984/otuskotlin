@@ -2,6 +2,7 @@ package ru.beeline.vafs.common.helpers
 
 import ru.beeline.vafs.common.VafsContext
 import ru.beeline.vafs.common.models.VafsError
+import ru.beeline.vafs.common.models.VafsState
 
 fun Throwable.asVafsError(
     code: String = "unknown",
@@ -16,3 +17,22 @@ fun Throwable.asVafsError(
 )
 
 fun VafsContext.addError(vararg error: VafsError) = errors.addAll(error)
+
+fun VafsContext.fail(error: VafsError) {
+    addError(error)
+    state = VafsState.FAILING
+}
+
+fun errorValidation(
+    field: String,
+    violationCode: String,
+    description: String,
+    level: VafsError.Level = VafsError.Level.ERROR,
+) = VafsError(
+    code = "validation-$field-$violationCode",
+    field = field,
+    group = "validation",
+    message = "Validation error for field $field: $description",
+    level = level,
+)
+

@@ -18,6 +18,7 @@ object VafsRuleStub {
         generateVafsRule(get(), "rule-123-06", filter),
     )
 
+    fun prepareResult(block: VafsRule.() -> Unit): VafsRule = get().apply(block)
     private fun generateVafsRule(base: VafsRule, id: String, filter: String) = base.copy(
         id = VafsRuleId(id),
         description = "description $filter $id",

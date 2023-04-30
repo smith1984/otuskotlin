@@ -18,7 +18,7 @@ class V1RuleStubApiTest {
     fun create() = testApplication {
         val client = myClient()
 
-        val response = client.post("/v1/ad/create") {
+        val response = client.post("/v1/rule/create") {
             val requestObj = RuleCreateRequest(
                 requestId = "12345-987654",
                 rule = RuleCreateObject(
@@ -53,7 +53,7 @@ class V1RuleStubApiTest {
     fun read() = testApplication {
         val client = myClient()
 
-        val response = client.post("/v1/ad/read") {
+        val response = client.post("/v1/rule/read") {
             val requestObj = RuleReadRequest(
                 requestId = "12345-987654",
                 rule = RuleReadObject("123987"),
@@ -63,6 +63,7 @@ class V1RuleStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            println(requestObj)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleReadResponse>()
@@ -74,7 +75,7 @@ class V1RuleStubApiTest {
     fun update() = testApplication {
         val client = myClient()
 
-        val response = client.post("/v1/ad/update") {
+        val response = client.post("/v1/rule/update") {
             val requestObj = RuleUpdateRequest(
                 requestId = "12345-987654",
                 rule = RuleUpdateObject(
@@ -108,7 +109,7 @@ class V1RuleStubApiTest {
     fun delete() = testApplication {
         val client = myClient()
 
-        val response = client.post("/v1/ad/delete") {
+        val response = client.post("/v1/rule/delete") {
             val requestObj = RuleDeleteRequest(
                 requestId = "12345-987654",
                 rule = RuleDeleteObject(
@@ -131,10 +132,10 @@ class V1RuleStubApiTest {
     fun search() = testApplication {
         val client = myClient()
 
-        val response = client.post("/v1/ad/search") {
+        val response = client.post("/v1/rule/search") {
             val requestObj = RuleSearchRequest(
                 requestId = "12345-987654",
-                adFilter = RuleSearchFilter(),
+                ruleFilter = RuleSearchFilter(),
                 debug = RuleDebug(
                     mode = RuleRequestDebugMode.STUB,
                     stub = RuleRequestDebugStubs.SUCCESS

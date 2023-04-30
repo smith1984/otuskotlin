@@ -82,7 +82,7 @@ fun VafsContext.fromTransport(request: RuleDeleteRequest) {
 fun VafsContext.fromTransport(request: RuleSearchRequest) {
     command = VafsCommand.SEARCH
     requestId = request.requestId()
-    ruleFilterRequest = request.adFilter.toInternal()
+    ruleFilterRequest = request.ruleFilter.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }

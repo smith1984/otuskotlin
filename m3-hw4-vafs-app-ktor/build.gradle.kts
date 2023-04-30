@@ -1,9 +1,8 @@
 import org.jetbrains.kotlin.util.suffixIfNot
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 val ktorVersion: String by project
-val logbackVersion: String by project
+val fluentLoggerVersion: String by project
+val logbackAppendersVersion: String by project
 
 
 fun ktor(module: String, prefix: String = "server-", version: String? = this@Build_gradle.ktorVersion): Any =
@@ -14,8 +13,6 @@ plugins {
 
     id("application")
 
-    id("com.bmuschko.docker-java-application")
-    id("com.bmuschko.docker-remote-api")
 }
 
 repositories {
@@ -43,15 +40,21 @@ dependencies {
     implementation(ktor("cors"))
     implementation(ktor("default-headers"))
     implementation(ktor("websockets"))
+    implementation(ktor("config-yaml"))
 
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    implementation(project(":m4-hw6-vafs-lib-logging-logback"))
+    implementation("com.sndyuk:logback-more-appenders:$logbackAppendersVersion")
+    implementation("org.fluentd:fluent-logger:$fluentLoggerVersion")
 
     implementation(project(":m2-hw3-vafs-api-v1-jakson"))
     implementation(project(":m2-hw3-vafs-common"))
     implementation(project(":m2-hw3-vafs-mappers-v1"))
     implementation(project(":m3-hw4-vafs-stubs"))
-    implementation("io.ktor:ktor-server-core-jvm:2.2.3")
-    implementation("io.ktor:ktor-server-websockets-jvm:2.2.3")
+    implementation(project(":m4-hw6-vafs-logging-common"))
+    implementation(project(":m4-hw6-vafs-mappers-log"))
+    implementation(project(":m4-hw6-vafs-api-log"))
+    implementation(project(":m4-hw6-vafs-biz"))
+
 
     testImplementation(kotlin("test-junit"))
     testImplementation(ktor("content-negotiation", prefix = "client-"))
