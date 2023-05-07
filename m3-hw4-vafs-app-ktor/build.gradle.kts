@@ -24,6 +24,7 @@ application {
 }
 
 dependencies {
+
     implementation(kotlin("stdlib"))
 
     implementation(ktor("core"))
@@ -54,10 +55,13 @@ dependencies {
     implementation(project(":m4-hw6-vafs-mappers-log"))
     implementation(project(":m4-hw6-vafs-api-log"))
     implementation(project(":m4-hw6-vafs-biz"))
-
+    implementation(project(":m5-hw7-vafs-repo-stubs"))
+    implementation(project(":m5-hw7-vafs-repo-in-memory"))
+    implementation(project(":m5-hw7-vafs-repo-postgresql"))
 
     testImplementation(kotlin("test-junit"))
     testImplementation(ktor("content-negotiation", prefix = "client-"))
     testImplementation(ktor("test-host"))
+    testImplementation(project(":m5-hw7-vafs-repo-tests"))
 
 }

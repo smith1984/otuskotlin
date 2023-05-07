@@ -67,7 +67,7 @@ components:
           type: string
 
     RuleLog:
-      title: Модель лога для объявления
+      title: Модель лога для правила
       type: object
       properties:
         id:

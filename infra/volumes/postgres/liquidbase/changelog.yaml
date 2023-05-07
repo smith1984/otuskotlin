@@ -4,24 +4,110 @@ databaseChangeLog:
        id:  1
        author:  mppetrov
        changes:
+         - sql:
+             "CREATE SCHEMA IF NOT EXISTS backoffice;"
          -  createTable:
-              tableName:  person
+              schemaName: backoffice
+              tableName: user
               columns:
                 -  column:
                      name:  id
-                     type:  int
-                     autoIncrement:  true
+                     type:  varchar(50)
                      constraints:
                        primaryKey:  true
                        nullable:  false
                 -  column:
-                     name:  firstname
-                     type:  varchar(50)
-                -  column:
-                     name:  lastname
+                     name:  name
                      type:  varchar(50)
                      constraints:
+                       unique: true
+                       nullable:  false
+         -  createTable:
+              schemaName: backoffice
+              tableName:  list_number
+              columns:
+                -  column:
+                     name:  id
+                     type:  varchar(50)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  value
+                     type:  varchar(15)
+                     constraints:
+                       nullable: false
+         -  createTable:
+              schemaName: backoffice
+              tableName: rule
+              columns:
+                -  column:
+                     name:  id
+                     type:  varchar(50)
+                     constraints:
+                       primaryKey:  true
                        nullable:  false
                 -  column:
-                     name:  state
-                     type:  char(2)
+                     name:  description
+                     type:  varchar(4000)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  user_id
+                     type:  varchar(50)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  priority
+                     type:  integer
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  list_for_number_a
+                     type:  varchar(50)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  type_operation_a
+                     type:  integer
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  list_for_number_b
+                     type:  varchar(50)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  type_operation_b
+                     type:  integer
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  type_operation_count
+                     type:  integer
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  target_count
+                     type:  integer
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  value_is_true
+                     type:  boolean
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  type_operation_a_b
+                     type:  integer
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  type_operation_ab_count
+                     type:  integer
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  lock
+                     type:  varchar(50)
+                     constraints:
+                       nullable: false

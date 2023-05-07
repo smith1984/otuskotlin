@@ -1,18 +1,23 @@
 package ru.beeline.vafs.biz
 
+import ru.beeline.vafs.biz.general.initRepo
+import ru.beeline.vafs.biz.general.prepareResult
 import ru.beeline.vafs.biz.groups.*
+import ru.beeline.vafs.biz.repo.*
 import ru.beeline.vafs.biz.validation.*
 import ru.beeline.vafs.biz.workers.*
 import ru.beeline.vafs.common.VafsContext
+import ru.beeline.vafs.common.VafsCorSettings
 import ru.beeline.vafs.common.models.*
 import ru.beeline.vafs.cor.*
 
-class VafsRuleProcessor() {
-    suspend fun exec(ctx: VafsContext) = BusinessChain.exec(ctx)
+class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings()) {
+    suspend fun exec(ctx: VafsContext) = BusinessChain.exec(ctx.apply { settings = this@VafsRuleProcessor.settings })
 
     companion object {
         private val BusinessChain = rootChain<VafsContext> {
             initStatus("Инициализация статуса")
+            initRepo("Инициализация репозитория")
 
             operation("Создание правила", VafsCommand.CREATE) {
                 stubs("Обработка стабов") {
@@ -32,7 +37,7 @@ class VafsRuleProcessor() {
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
                 validation {
-                    worker("Копируем поля в ruleValidating") { ruleValidating = ruleRequest.copy() }
+                    worker("Копируем поля в ruleValidating") { ruleValidating = ruleRequest.deepCopy() }
                     worker("Очистка описания") { ruleValidating.description = ruleValidating.description.trim() }
                     worker("Очистка значение в списке номеров A") {
                         ruleValidating.listForNumberA =
@@ -62,6 +67,12 @@ class VafsRuleProcessor() {
 
                     finishRuleValidation("Завершение проверок")
                 }
+                chain {
+                    title = "Логика сохранения"
+                    repoPrepareCreate("Подготовка объекта для сохранения")
+                    repoCreate("Создание правила в БД")
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Получить правило", VafsCommand.READ) {
                 stubs("Обработка стабов") {
@@ -71,7 +82,7 @@ class VafsRuleProcessor() {
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
                 validation {
-                    worker("Копируем поля в ruleValidating") { ruleValidating = ruleRequest.copy() }
+                    worker("Копируем поля в ruleValidating") { ruleValidating = ruleRequest.deepCopy() }
                     worker("Очистка id") { ruleValidating.id = VafsRuleId(ruleValidating.id.asString().trim()) }
 
                     validateIdNotEmpty("Проверка на непустой id")
@@ -79,6 +90,16 @@ class VafsRuleProcessor() {
 
                     finishRuleValidation("Успешное завершение процедуры валидации")
                 }
+                chain {
+                    title = "Логика чтения"
+                    repoRead("Чтение правила из БД")
+                    worker {
+                        title = "Подготовка ответа для Read"
+                        on { state == VafsState.RUNNING }
+                        handle { ruleRepoDone = ruleRepoRead }
+                    }
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Изменить правило", VafsCommand.UPDATE) {
                 stubs("Обработка стабов") {
@@ -99,8 +120,9 @@ class VafsRuleProcessor() {
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
                 validation {
-                    worker("Копируем поля в ruleValidating") { ruleValidating = ruleRequest.copy() }
+                    worker("Копируем поля в ruleValidating") { ruleValidating = ruleRequest.deepCopy() }
                     worker("Очистка id") { ruleValidating.id = VafsRuleId(ruleValidating.id.asString().trim()) }
+                    worker("Очистка lock") { ruleValidating.lock = VafsRuleLock(ruleValidating.lock.asString().trim()) }
                     worker("Очистка описания") { ruleValidating.description = ruleValidating.description.trim() }
                     worker("Очистка значение в списке номеров A") {
                         ruleValidating.listForNumberA =
@@ -113,6 +135,8 @@ class VafsRuleProcessor() {
 
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
+                    validateLockNotEmpty("Проверка на непустой lock")
+                    validateLockProperFormat("Проверка формата lock")
                     validateDescriptionNotEmpty("Проверка на непустое описание")
                     validateDescriptionHasContent("Проверка на наличие содержания в описании")
                     validatePriorityNotEqualZero("Проверка, что приоритет не равен 0")
@@ -132,6 +156,13 @@ class VafsRuleProcessor() {
 
                     finishRuleValidation("Успешное завершение процедуры валидации")
                 }
+                chain {
+                    title = "Логика сохранения изменения"
+                    repoRead("Чтение правила из БД")
+                    repoPrepareUpdate("Подготовка объекта для обновления")
+                    repoUpdate("Обновление правила в БД")
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Удалить правило", VafsCommand.DELETE) {
                 stubs("Обработка стабов") {
@@ -142,15 +173,24 @@ class VafsRuleProcessor() {
                 }
                 validation {
                     worker("Копируем поля в ruleValidating") {
-                        ruleValidating = ruleRequest.copy()
+                        ruleValidating = ruleRequest.deepCopy()
                     }
                     worker("Очистка id") { ruleValidating.id = VafsRuleId(ruleValidating.id.asString().trim()) }
+                    worker("Очистка lock") { ruleValidating.lock = VafsRuleLock(ruleValidating.lock.asString().trim()) }
 
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
-
+                    validateLockNotEmpty("Проверка на непустой lock")
+                    validateLockProperFormat("Проверка формата lock")
                     finishRuleValidation("Успешное завершение процедуры валидации")
                 }
+                chain {
+                    title = "Логика удаления"
+                    repoRead("Чтение правила из БД")
+                    repoPrepareDelete("Подготовка объекта для удаления")
+                    repoDelete("Удаление правила из БД")
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Поиск правил", VafsCommand.SEARCH) {
                 stubs("Обработка стабов") {
@@ -164,7 +204,8 @@ class VafsRuleProcessor() {
 
                     finishRuleFilterValidation("Успешное завершение процедуры валидации")
                 }
-
+                repoSearch("Поиск правил в БД по фильтру")
+                prepareResult("Подготовка ответа")
             }
         }.build()
     }

@@ -18,6 +18,7 @@ fun VafsContext.fromTransport(request: IRequest) = when (request) {
 
 private fun String?.toRuleId() = this?.let { VafsRuleId(it) } ?: VafsRuleId.NONE
 private fun String?.toRuleWithId() = VafsRule(id = this.toRuleId())
+private fun String?.toRuleLock() = this?.let { VafsRuleLock(it) } ?: VafsRuleLock.NONE
 private fun IRequest?.requestId() = this?.requestId?.let { VafsRequestId(it) } ?: VafsRequestId.NONE
 
 private fun RuleDebug?.transportToWorkMode(): VafsWorkMode = when (this?.mode) {
@@ -58,9 +59,15 @@ fun VafsContext.fromTransport(request: RuleCreateRequest) {
 fun VafsContext.fromTransport(request: RuleReadRequest) {
     command = VafsCommand.READ
     requestId = request.requestId()
-    ruleRequest = request.rule?.id.toRuleWithId()
+    ruleRequest = request.rule.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
+}
+
+private fun RuleReadObject?.toInternal(): VafsRule = if (this != null) {
+    VafsRule(id = id.toRuleId())
+} else {
+    VafsRule.NONE
 }
 
 fun VafsContext.fromTransport(request: RuleUpdateRequest) {
@@ -74,9 +81,18 @@ fun VafsContext.fromTransport(request: RuleUpdateRequest) {
 fun VafsContext.fromTransport(request: RuleDeleteRequest) {
     command = VafsCommand.DELETE
     requestId = request.requestId()
-    ruleRequest = request.rule?.id.toRuleWithId()
+    ruleRequest = request.rule.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
+}
+
+private fun RuleDeleteObject?.toInternal(): VafsRule = if (this != null) {
+    VafsRule(
+        id = id.toRuleId(),
+        lock = lock.toRuleLock(),
+    )
+} else {
+    VafsRule.NONE
 }
 
 fun VafsContext.fromTransport(request: RuleSearchRequest) {
@@ -139,7 +155,8 @@ private fun RuleUpdateObject.toInternal(): VafsRule = VafsRule(
     targetCount = this.targetCount ?: 0,
     valueIsTrue = this.valueIsTrue ?: false,
     typeOperationAB = this.typeOperationAB.fromTransport(),
-    typeOperationABCount = this.typeOperationABCount.fromTransport()
+    typeOperationABCount = this.typeOperationABCount.fromTransport(),
+    lock = lock.toRuleLock(),
 )
 
 

@@ -5,9 +5,8 @@ COPY --chown=gradle:gradle . /home/gradle/src
 
 WORKDIR /home/gradle/src
 
-RUN ls
-
-RUN gradle jar
+RUN gradle clean
+RUN gradle assemble
 RUN tar -xvf ./m3-hw4-vafs-app-ktor/build/distributions/m3-hw4-vafs-app-ktor-0.0.1.tar
 
 

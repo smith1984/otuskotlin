@@ -15,4 +15,16 @@ data class VafsRule(
     var valueIsTrue: Boolean = false,
     var typeOperationAB: VafsTypeOperationBool = VafsTypeOperationBool.NONE,
     var typeOperationABCount: VafsTypeOperationBool = VafsTypeOperationBool.NONE,
-)
+    var lock: VafsRuleLock = VafsRuleLock.NONE,
+    val permissionsClient: MutableSet<VafsRulePermissionOperator> = mutableSetOf()
+) {
+    fun deepCopy(): VafsRule = copy(
+        permissionsClient = permissionsClient.toMutableSet(),
+    )
+
+    fun isEmpty() = this == NONE
+
+    companion object {
+        val NONE = VafsRule()
+    }
+}

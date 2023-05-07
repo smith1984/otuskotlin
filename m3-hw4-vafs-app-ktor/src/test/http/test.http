@@ -1,0 +1,83 @@
+POST http://localhost:8080/v1/rule/create
+Content-Type: application/json
+
+{
+  "requestType": "create",
+  "requestId": "123",
+  "debug": {
+    "mode": "prod"
+  },
+  "rule": {
+    "description": "rule description",
+    "priority": 1000,
+    "listForNumberA": [
+      "79993333333"
+    ],
+    "typeOperationA": "include",
+    "listForNumberB": [
+      "79993333331", "79993333337"
+    ],
+    "typeOperationB": "include",
+    "typeOperationCount": ">",
+    "targetCount": 10,
+    "valueIsTrue": true,
+    "typeOperationAB": "OR",
+    "typeOperationABCount": "OR"
+  }
+}
+
+> {%
+    client.global.set("rule_id", response.body.rule.id);
+    client.log(client.global.get("rule_id"))
+%}
+
+###
+POST http://localhost:8080/v1/rule/read
+Content-Type: application/json
+
+{
+  "requestType": "read",
+  "requestId": "12343",
+  "debug": {
+    "mode": "prod"
+  },
+  "rule": {
+    "id": "{{ rule_id }}"
+  }
+}
+
+> {%
+    client.global.set("lock", response.body.rule.lock);
+    client.log(client.global.get("lock"))
+%}
+
+###
+POST http://localhost:8080/v1/rule/delete
+Content-Type: application/json
+
+{
+  "requestType": "delete",
+  "requestId": "12343",
+  "debug": {
+    "mode": "prod"
+  },
+  "rule": {
+    "id": "{{ rule_id }}",
+    "lock": "{{ lock }}"
+  }
+}
+
+###
+POST http://localhost:8080/v1/rule/read
+Content-Type: application/json
+
+{
+  "requestType": "read",
+  "requestId": "12343",
+  "debug": {
+    "mode": "prod"
+  },
+  "rule": {
+    "id": "{{ rule_id }}"
+  }
+}

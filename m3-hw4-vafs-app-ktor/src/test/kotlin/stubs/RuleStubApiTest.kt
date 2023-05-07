@@ -44,7 +44,6 @@ class V1RuleStubApiTest {
             setBody(requestObj)
         }
         val responseObj = response.body<RuleCreateResponse>()
-        println(responseObj)
         assertEquals(200, response.status.value)
         assertEquals("123987", responseObj.rule?.id)
     }
@@ -63,7 +62,6 @@ class V1RuleStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
-            println(requestObj)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleReadResponse>()

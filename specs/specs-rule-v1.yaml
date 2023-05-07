@@ -372,7 +372,7 @@ components:
     RuleResponseSingle:
       allOf:
         - type: object
-          description: Ответ с одним объектом объявления
+          description: Ответ с одним объектом правило
           properties:
             rule:
               $ref: '#/components/schemas/RuleResponseObject'

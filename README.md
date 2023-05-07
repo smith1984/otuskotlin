@@ -55,3 +55,9 @@ Voice Antifraud System -- это платформа для антифрод ан
 ## Модули бизнес-логики
 1. [m4-hw6-vafs-lib-cor](m4-hw6-vafs-lib-cor) - Библиотека цепочки обязанностей для бизнес-логики
 2. [m4-hw6-vafs-biz](m4-hw6-vafs-biz) - Модуль бизнес-логики приложения
+
+## Хранение, репозитории, базы данных
+1. [m5-hw7-vafs-repo-tests](m5-hw7-vafs-repo-tests) - Базовые тесты для репозиториев всех баз данных
+2. [m5-hw7-vafs-repo-stubs](m5-hw7-vafs-repo-stubs) - Интерфейс репозитория в виде стабов
+3. [m5-hw7-vafs-repo-in-memory](m5-hw7-vafs-repo-in-memory) - Репозиторий на базе кэша в памяти для тестирования
+4. [m5-hw7-vafs-repo-postgresql](m5-hw7-vafs-repo-postgresql) - Репозиторий на базе PostgreSQL

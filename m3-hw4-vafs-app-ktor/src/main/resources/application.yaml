@@ -7,3 +7,9 @@ ktor:
   application:
     modules:
       - "ru.beeline.vafs.ktor.ApplicationKt.module"
+
+sql:
+  url: "$POSTGRES_URL:jdbc:postgresql://localhost:5432/vafs"
+  user: "$POSTGRES_USER:vafs"
+  password: "$POSTGRES_PASSWORD:vafs"
+

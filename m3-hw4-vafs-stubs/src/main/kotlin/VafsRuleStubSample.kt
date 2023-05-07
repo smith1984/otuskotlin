@@ -19,6 +19,8 @@ object VafsRuleStubSample {
             typeOperationABCount = VafsTypeOperationBool.AND,
             userId = VafsUserId("operator-1"),
 
+            lock = VafsRuleLock("123-234-abc-ABC"),
+
             permissionsOperator = mutableSetOf(
                 VafsRulePermissionOperator.READ,
                 VafsRulePermissionOperator.UPDATE,
