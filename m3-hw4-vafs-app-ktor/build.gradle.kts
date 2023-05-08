@@ -1,18 +1,18 @@
+import io.ktor.plugin.features.*
 import org.jetbrains.kotlin.util.suffixIfNot
 
 val ktorVersion: String by project
 val fluentLoggerVersion: String by project
 val logbackAppendersVersion: String by project
-
+val javaVersion: String by project
 
 fun ktor(module: String, prefix: String = "server-", version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-${prefix.suffixIfNot("-")}$module:$version"
 
 plugins {
     kotlin("jvm")
-
     id("application")
-
+    id("io.ktor.plugin")
 }
 
 repositories {
@@ -21,6 +21,21 @@ repositories {
 
 application {
     mainClass.set("ru.beeline.vafs.ktor.ApplicationKt")
+}
+
+ktor {
+    docker {
+        localImageName.set(project.name)
+        imageTag.set(project.version.toString())
+        jreVersion.set(JreVersion.valueOf("JRE_$javaVersion"))
+        externalRegistry.set(
+            DockerImageRegistry.dockerHub(
+                appName = provider { "vafs-app" },
+                username = providers.environmentVariable("DOCKER_HUB_USERNAME"),
+                password = providers.environmentVariable("DOCKER_HUB_PASSWORD")
+            )
+        )
+    }
 }
 
 dependencies {
