@@ -24,7 +24,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 private val clazz = Application::module::class.qualifiedName ?: "Application"
 @Suppress("unused")
-fun Application.module(appSettings: VafsAppSettings = initAppSettings(environment)) {
+fun Application.module(appSettings: VafsAppSettings = initAppSettings()) {
 
     install(CallLogging) {
         level = Level.INFO
