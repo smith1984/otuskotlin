@@ -10,7 +10,7 @@ fun ICorChainDsl<VafsContext>.repoPrepareCreate(title: String) = worker {
     description = "Подготовка объекта к сохранению в базе данных"
     on { state == VafsState.RUNNING }
     handle {
-        ruleRepoRead = ruleValidated.deepCopy()
+        ruleRepoRead = ruleValidated.copy()
         ruleRepoPrepare = ruleRepoRead
 
     }

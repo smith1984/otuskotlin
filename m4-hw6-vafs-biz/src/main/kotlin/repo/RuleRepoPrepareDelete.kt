@@ -12,6 +12,6 @@ fun ICorChainDsl<VafsContext>.repoPrepareDelete(title: String) = worker {
     """.trimIndent()
     on { state == VafsState.RUNNING }
     handle {
-        ruleRepoPrepare = ruleValidated.deepCopy()
+        ruleRepoPrepare = ruleValidated.copy()
     }
 }

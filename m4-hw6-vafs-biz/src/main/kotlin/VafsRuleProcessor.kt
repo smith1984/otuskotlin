@@ -37,7 +37,7 @@ class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings(
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
                 validation {
-                    worker("Копируем поля в ruleValidating") { ruleValidating = ruleRequest.deepCopy() }
+                    worker("Копируем поля в ruleValidating") { ruleValidating = ruleRequest.copy() }
                     worker("Очистка описания") { ruleValidating.description = ruleValidating.description.trim() }
                     worker("Очистка значение в списке номеров A") {
                         ruleValidating.listForNumberA =
@@ -82,7 +82,7 @@ class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings(
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
                 validation {
-                    worker("Копируем поля в ruleValidating") { ruleValidating = ruleRequest.deepCopy() }
+                    worker("Копируем поля в ruleValidating") { ruleValidating = ruleRequest.copy() }
                     worker("Очистка id") { ruleValidating.id = VafsRuleId(ruleValidating.id.asString().trim()) }
 
                     validateIdNotEmpty("Проверка на непустой id")
@@ -120,7 +120,7 @@ class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings(
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
                 validation {
-                    worker("Копируем поля в ruleValidating") { ruleValidating = ruleRequest.deepCopy() }
+                    worker("Копируем поля в ruleValidating") { ruleValidating = ruleRequest.copy() }
                     worker("Очистка id") { ruleValidating.id = VafsRuleId(ruleValidating.id.asString().trim()) }
                     worker("Очистка lock") { ruleValidating.lock = VafsRuleLock(ruleValidating.lock.asString().trim()) }
                     worker("Очистка описания") { ruleValidating.description = ruleValidating.description.trim() }
@@ -173,7 +173,7 @@ class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings(
                 }
                 validation {
                     worker("Копируем поля в ruleValidating") {
-                        ruleValidating = ruleRequest.deepCopy()
+                        ruleValidating = ruleRequest.copy()
                     }
                     worker("Очистка id") { ruleValidating.id = VafsRuleId(ruleValidating.id.asString().trim()) }
                     worker("Очистка lock") { ruleValidating.lock = VafsRuleLock(ruleValidating.lock.asString().trim()) }

@@ -11,7 +11,7 @@ fun ICorChainDsl<VafsContext>.repoPrepareUpdate(title: String) = worker {
             "и данные, полученные от пользователя"
     on { state == VafsState.RUNNING }
     handle {
-        ruleRepoPrepare = ruleRepoRead.deepCopy().apply {
+        ruleRepoPrepare = ruleRepoRead.copy().apply {
             description = ruleValidated.description
             priority = ruleValidated.priority
             listForNumberA = ruleValidated.listForNumberA
