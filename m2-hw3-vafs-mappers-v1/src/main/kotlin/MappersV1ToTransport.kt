@@ -17,7 +17,7 @@ fun VafsContext.toTransportRule(): IResponse = when (val cmd = command) {
 fun VafsContext.toTransportCreate() = RuleCreateResponse(
     responseType = "create",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == VafsState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == VafsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rule = ruleResponse.toTransportRule()
 )
@@ -25,7 +25,7 @@ fun VafsContext.toTransportCreate() = RuleCreateResponse(
 fun VafsContext.toTransportRead() = RuleReadResponse(
     responseType = "read",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == VafsState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == VafsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rule = ruleResponse.toTransportRule()
 )
@@ -33,7 +33,7 @@ fun VafsContext.toTransportRead() = RuleReadResponse(
 fun VafsContext.toTransportUpdate() = RuleUpdateResponse(
     responseType = "update",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == VafsState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == VafsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rule = ruleResponse.toTransportRule()
 )
@@ -41,7 +41,7 @@ fun VafsContext.toTransportUpdate() = RuleUpdateResponse(
 fun VafsContext.toTransportDelete() = RuleDeleteResponse(
     responseType = "delete",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == VafsState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == VafsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rule = ruleResponse.toTransportRule()
 )
@@ -49,7 +49,7 @@ fun VafsContext.toTransportDelete() = RuleDeleteResponse(
 fun VafsContext.toTransportSearch() = RuleSearchResponse(
     responseType = "search",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == VafsState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == VafsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rules = rulesResponse.toTransportRule()
 )
@@ -66,20 +66,21 @@ fun VafsContext.toTransportInit() = RuleInitResponse(
 )
 
 private fun VafsRule.toTransportRule(): RuleResponseObject = RuleResponseObject(
-        id = id.takeIf { it != VafsRuleId.NONE }?.asString(),
-        description = description.takeIf { it.isNotBlank() },
-        userId = userId.takeIf { it != VafsUserId.NONE }?.asString(),
-        permissions = permissionsOperator.toTransportRule(),
-        priority = priority.takeIf { it != 0 },
-        listForNumberA = listForNumberA.takeIf { it.isNotEmpty() },
-        typeOperationA = typeOperationA.toTransportRule(),
-        listForNumberB = listForNumberB.takeIf { it.isNotEmpty() },
-        typeOperationB = typeOperationB.toTransportRule(),
-        typeOperationCount = typeOperationCount.toTransportRule(),
-        targetCount = targetCount.takeIf { it != 0 },
-        valueIsTrue = valueIsTrue.takeIf { !it },
-        typeOperationAB = typeOperationAB.toTransportRule(),
-        typeOperationABCount = typeOperationABCount.toTransportRule(),
+    id = id.takeIf { it != VafsRuleId.NONE }?.asString(),
+    description = description.takeIf { it.isNotBlank() },
+    userId = userId.takeIf { it != VafsUserId.NONE }?.asString(),
+    permissions = permissionsOperator.toTransportRule(),
+    priority = priority.takeIf { it != 0 },
+    listForNumberA = listForNumberA.takeIf { it.isNotEmpty() },
+    typeOperationA = typeOperationA.toTransportRule(),
+    listForNumberB = listForNumberB.takeIf { it.isNotEmpty() },
+    typeOperationB = typeOperationB.toTransportRule(),
+    typeOperationCount = typeOperationCount.toTransportRule(),
+    targetCount = targetCount.takeIf { it != 0 },
+    valueIsTrue = valueIsTrue,
+    typeOperationAB = typeOperationAB.toTransportRule(),
+    typeOperationABCount = typeOperationABCount.toTransportRule(),
+    lock = lock.takeIf { it != VafsRuleLock.NONE }?.asString(),
 )
 
 private fun Set<VafsRulePermissionOperator>.toTransportRule(): Set<RulePermissions>? = this

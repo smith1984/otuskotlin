@@ -46,7 +46,7 @@ fun VafsRule.toLog() = RuleLog(
     typeOperationB = typeOperationB.toLog(),
     typeOperationCount = typeOperationCount.toLog(),
     targetCount = targetCount.takeIf { it != 0 },
-    valueIsTrue = valueIsTrue.takeIf { !it },
+    valueIsTrue = valueIsTrue,
     typeOperationAB = typeOperationAB.toLog(),
     typeOperationABCount = typeOperationABCount.toLog(),
     userId = userId.takeIf { it != VafsUserId.NONE }?.asString(),

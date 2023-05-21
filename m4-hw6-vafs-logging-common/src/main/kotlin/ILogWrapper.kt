@@ -1,6 +1,5 @@
 package ru.beeline.vafs.logging.common
 
-import kotlinx.datetime.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTimedValue
 
@@ -91,18 +90,7 @@ interface ILogWrapper {
                 e: Throwable?,
                 data: Any?,
                 objs: Map<String, Any>?,
-            ) {
-                val markerString = marker
-                    .takeIf { it.isNotBlank() }
-                    ?.let { " ($it)" }
-                val args = listOfNotNull(
-                    "${Clock.System.now().toString()} [${level.name}]$markerString: $msg",
-                    e?.let { "${it.message ?: "Unknown reason"}:\n${it.stackTraceToString()}" },
-                    data.toString(),
-                    objs.toString(),
-                )
-                println(args.joinToString("\n"))
-            }
+            ) {}
 
         }
     }

@@ -19,11 +19,11 @@ import ru.beeline.vafs.ktor.plugins.initAppSettings
 import ru.beeline.vafs.ktor.v1.v1Rule
 import ru.beeline.vafs.ktor.v1.wsHandlerV1
 import ru.beeline.vafs.logging.logback.LogWrapperLogback
-import java.time.Duration
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 private val clazz = Application::module::class.qualifiedName ?: "Application"
+@Suppress("unused")
 fun Application.module(appSettings: VafsAppSettings = initAppSettings()) {
 
     install(CallLogging) {

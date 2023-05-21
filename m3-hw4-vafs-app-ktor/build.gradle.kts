@@ -1,18 +1,18 @@
+import io.ktor.plugin.features.*
 import org.jetbrains.kotlin.util.suffixIfNot
 
 val ktorVersion: String by project
 val fluentLoggerVersion: String by project
 val logbackAppendersVersion: String by project
-
+val javaVersion: String by project
 
 fun ktor(module: String, prefix: String = "server-", version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-${prefix.suffixIfNot("-")}$module:$version"
 
 plugins {
     kotlin("jvm")
-
     id("application")
-
+    id("io.ktor.plugin")
 }
 
 repositories {
@@ -23,7 +23,23 @@ application {
     mainClass.set("ru.beeline.vafs.ktor.ApplicationKt")
 }
 
+ktor {
+    docker {
+        localImageName.set(project.name)
+        imageTag.set(project.version.toString())
+        jreVersion.set(JreVersion.valueOf("JRE_$javaVersion"))
+        externalRegistry.set(
+            DockerImageRegistry.dockerHub(
+                appName = provider { "vafs-app" },
+                username = providers.environmentVariable("DOCKER_HUB_USERNAME"),
+                password = providers.environmentVariable("DOCKER_HUB_PASSWORD")
+            )
+        )
+    }
+}
+
 dependencies {
+
     implementation(kotlin("stdlib"))
 
     implementation(ktor("core"))
@@ -54,10 +70,13 @@ dependencies {
     implementation(project(":m4-hw6-vafs-mappers-log"))
     implementation(project(":m4-hw6-vafs-api-log"))
     implementation(project(":m4-hw6-vafs-biz"))
-
+    implementation(project(":m5-hw7-vafs-repo-stubs"))
+    implementation(project(":m5-hw7-vafs-repo-in-memory"))
+    implementation(project(":m5-hw7-vafs-repo-postgresql"))
 
     testImplementation(kotlin("test-junit"))
     testImplementation(ktor("content-negotiation", prefix = "client-"))
     testImplementation(ktor("test-host"))
+    testImplementation(project(":m5-hw7-vafs-repo-tests"))
 
 }

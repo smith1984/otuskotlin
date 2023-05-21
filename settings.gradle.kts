@@ -2,10 +2,13 @@ rootProject.name = "otuskotlin"
 
 pluginManagement {
     val kotlinVersion: String by settings
+    val ktorPluginVersion: String by settings
     val openapiVersion: String by settings
 
     plugins {
         kotlin("jvm") version kotlinVersion apply false
+
+        id("io.ktor.plugin") version ktorPluginVersion apply false
 
         id("org.openapi.generator") version openapiVersion apply false
     }
@@ -23,3 +26,7 @@ include("m4-hw6-vafs-lib-logging-logback")
 include("m4-hw6-vafs-mappers-log")
 include("m4-hw6-vafs-lib-cor")
 include("m4-hw6-vafs-biz")
+include("m5-hw7-vafs-repo-stubs")
+include("m5-hw7-vafs-repo-tests")
+include("m5-hw7-vafs-repo-in-memory")
+include("m5-hw7-vafs-repo-postgresql")

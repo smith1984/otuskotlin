@@ -3,7 +3,6 @@ package ru.beeline.vafs.common.models
 data class VafsRule(
     var id: VafsRuleId = VafsRuleId.NONE,
     var userId: VafsUserId = VafsUserId.NONE,
-    var permissionsOperator: Set<VafsRulePermissionOperator> = setOf(),
     var description: String = "",
     var priority: Int = 0,
     var listForNumberA: List<String> = listOf(),
@@ -15,4 +14,12 @@ data class VafsRule(
     var valueIsTrue: Boolean = false,
     var typeOperationAB: VafsTypeOperationBool = VafsTypeOperationBool.NONE,
     var typeOperationABCount: VafsTypeOperationBool = VafsTypeOperationBool.NONE,
-)
+    var lock: VafsRuleLock = VafsRuleLock.NONE,
+    val permissionsOperator: MutableSet<VafsRulePermissionOperator> = mutableSetOf()
+) {
+    fun isEmpty() = this == NONE
+
+    companion object {
+        val NONE = VafsRule()
+    }
+}

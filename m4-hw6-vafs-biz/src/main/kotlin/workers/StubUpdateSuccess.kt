@@ -23,7 +23,7 @@ fun ICorChainDsl<VafsContext>.stubUpdateSuccess(title: String) = worker {
             ruleRequest.typeOperationB.takeIf { it == VafsTypeOperationList.NONE }?.also { this.typeOperationB = it }
             ruleRequest.typeOperationCount.takeIf { it == VafsTypeOperationCount.NONE }?.also { this.typeOperationCount = it }
             ruleRequest.targetCount.takeIf { it != 0 }?.also { this.targetCount = it }
-            ruleRequest.valueIsTrue.takeIf { !it }?.also { this.valueIsTrue = it }
+            ruleRequest.valueIsTrue
             ruleRequest.typeOperationAB.takeIf { it == VafsTypeOperationBool.NONE }?.also { this.typeOperationAB = it }
             ruleRequest.typeOperationABCount.takeIf { it == VafsTypeOperationBool.NONE }?.also { this.typeOperationABCount = it }
         }

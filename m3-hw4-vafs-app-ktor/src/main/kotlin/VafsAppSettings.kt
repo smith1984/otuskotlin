@@ -5,5 +5,5 @@ import ru.beeline.vafs.common.VafsCorSettings
 
 data class VafsAppSettings(
     val corSettings: VafsCorSettings,
-    val processor: VafsRuleProcessor,
+    val processor: VafsRuleProcessor = VafsRuleProcessor(settings = corSettings)
 )

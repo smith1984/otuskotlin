@@ -7,3 +7,12 @@ ktor:
   application:
     modules:
       - "ru.beeline.vafs.ktor.ApplicationKt.module"
+vafs:
+  repository:
+    test: memory
+    prod: psql
+    psql:
+      password: "$POSTGRES_PASSWORD:vafs"
+      schema: "backoffice"
+      url: "$POSTGRES_URL:jdbc:postgresql://localhost:5432/vafs"
+      user: "$POSTGRES_USER:vafs"
