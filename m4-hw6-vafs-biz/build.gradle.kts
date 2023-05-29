@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":m2-hw3-vafs-common"))
     implementation(project(":m3-hw4-vafs-stubs"))
     implementation(project(":m4-hw6-vafs-lib-cor"))
+    implementation(project(":m6-hw8-vafs-auth"))
 
     implementation(project(":m4-hw6-vafs-lib-logging-logback"))
     implementation(project(":m4-hw6-vafs-logging-common"))

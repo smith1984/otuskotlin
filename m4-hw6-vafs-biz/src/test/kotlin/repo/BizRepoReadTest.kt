@@ -7,6 +7,8 @@ import ru.beeline.vafs.biz.VafsRuleProcessor
 import ru.beeline.vafs.common.VafsContext
 import ru.beeline.vafs.common.VafsCorSettings
 import ru.beeline.vafs.common.models.*
+import ru.beeline.vafs.common.permissions.VafsPrincipalModel
+import ru.beeline.vafs.common.permissions.VafsUserGroups
 import ru.beeline.vafs.common.repo.DbRuleResponse
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -56,6 +58,13 @@ class BizRepoReadTest {
             workMode = VafsWorkMode.TEST,
             ruleRequest = VafsRule(
                 id = VafsRuleId("10000000-0000-0000-0000-000000000001"),
+            ),
+            principal = VafsPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    VafsUserGroups.USER,
+                    VafsUserGroups.TEST,
+                )
             ),
         )
         processor.exec(ctx)

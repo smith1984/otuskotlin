@@ -54,6 +54,8 @@ dependencies {
     implementation(ktor("call-logging"))
     implementation(ktor("auto-head-response"))
     implementation(ktor("cors"))
+    implementation(ktor("auth"))
+    implementation(ktor("auth-jwt"))
     implementation(ktor("default-headers"))
     implementation(ktor("websockets"))
     implementation(ktor("config-yaml"))

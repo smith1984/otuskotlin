@@ -14,9 +14,11 @@ import ru.beeline.api.v1.models.*
 import ru.beeline.vafs.common.VafsCorSettings
 import ru.beeline.vafs.common.models.*
 import ru.beeline.vafs.ktor.VafsAppSettings
+import ru.beeline.vafs.ktor.config.KtorAuthConfig
 import ru.beeline.vafs.ktor.module
 import ru.beeline.vafs.repository.test.SqlTestCompanion
 import ru.beeline.vafs.stub.VafsRuleStub
+import ru.otus.otuskotlin.marketplace.app.ru.otus.otuskotlin.marketplace.auth.addAuth
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
@@ -39,6 +41,8 @@ class RepoPostgresqlApiTest {
         lock = VafsRuleLock(uuidOld)
     }
 
+    private val userId = initRule.userId
+
     @Test
     fun create() = testApplication {
         val repo = SqlTestCompanion.repoUnderTestContainer(
@@ -51,7 +55,7 @@ class RepoPostgresqlApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
 
         val client = myClient()
@@ -79,6 +83,7 @@ class RepoPostgresqlApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleCreateResponse>()
@@ -109,7 +114,7 @@ class RepoPostgresqlApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
 
         val client = myClient()
@@ -123,6 +128,7 @@ class RepoPostgresqlApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleReadResponse>()
@@ -142,7 +148,7 @@ class RepoPostgresqlApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
         val client = myClient()
 
@@ -171,6 +177,7 @@ class RepoPostgresqlApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleUpdateResponse>()
@@ -201,7 +208,7 @@ class RepoPostgresqlApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
         val client = myClient()
 
@@ -217,6 +224,7 @@ class RepoPostgresqlApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleDeleteResponse>()
@@ -236,7 +244,7 @@ class RepoPostgresqlApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
         val client = myClient()
 
@@ -249,6 +257,7 @@ class RepoPostgresqlApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleSearchResponse>()

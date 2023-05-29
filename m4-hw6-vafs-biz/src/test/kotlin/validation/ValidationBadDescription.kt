@@ -5,22 +5,31 @@ import kotlinx.coroutines.test.runTest
 import ru.beeline.vafs.biz.VafsRuleProcessor
 import ru.beeline.vafs.common.VafsContext
 import ru.beeline.vafs.common.models.VafsCommand
+import ru.beeline.vafs.common.models.VafsRule
 import ru.beeline.vafs.common.models.VafsState
 import ru.beeline.vafs.common.models.VafsWorkMode
+import ru.beeline.vafs.common.permissions.VafsPrincipalModel
+import ru.beeline.vafs.common.permissions.VafsUserGroups
 import ru.beeline.vafs.stub.VafsRuleStub
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
-private val stub = VafsRuleStub.get()
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationDescriptionCorrect(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationDescriptionCorrect(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
-        ruleRequest = stub.copy(description = "test description")
+        ruleRequest = stub.copy(description = "test description"),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -29,13 +38,20 @@ fun validationDescriptionCorrect(command: VafsCommand, processor: VafsRuleProces
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationDescriptionTrim(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationDescriptionTrim(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
         ruleRequest = stub.copy(
             description = " \n\tdescription \n\t",
+        ),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -45,13 +61,20 @@ fun validationDescriptionTrim(command: VafsCommand, processor: VafsRuleProcessor
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationDescriptionEmpty(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationDescriptionEmpty(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
         ruleRequest = stub.copy(
             description = "",
+        ),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -63,13 +86,20 @@ fun validationDescriptionEmpty(command: VafsCommand, processor: VafsRuleProcesso
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationDescriptionSymbols(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationDescriptionSymbols(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
         ruleRequest = stub.copy(
             description = "!@#$%^&*(),.{}",
+        ),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)

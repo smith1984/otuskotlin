@@ -6,17 +6,15 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertNotEquals
 import ru.beeline.vafs.biz.VafsRuleProcessor
 import ru.beeline.vafs.common.VafsContext
-import ru.beeline.vafs.common.models.VafsCommand
-import ru.beeline.vafs.common.models.VafsRuleId
-import ru.beeline.vafs.common.models.VafsState
-import ru.beeline.vafs.common.models.VafsWorkMode
+import ru.beeline.vafs.common.models.*
+import ru.beeline.vafs.common.permissions.VafsPrincipalModel
+import ru.beeline.vafs.common.permissions.VafsUserGroups
 import ru.beeline.vafs.stub.VafsRuleStub
 import kotlin.test.assertContains
 
-private val stub = VafsRuleStub.get()
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationIdCorrect(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationIdCorrect(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
@@ -24,20 +22,12 @@ fun validationIdCorrect(command: VafsCommand, processor: VafsRuleProcessor) = ru
         ruleRequest = stub.copy(
             id = VafsRuleId("123-234-abc-ABC"),
         ),
-    )
-    processor.exec(ctx)
-    assertEquals(0, ctx.errors.size)
-    assertNotEquals(VafsState.FAILING, ctx.state)
-}
-
-@OptIn(ExperimentalCoroutinesApi::class)
-fun validationIdTrim(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
-    val ctx = VafsContext(
-        command = command,
-        state = VafsState.NONE,
-        workMode = VafsWorkMode.TEST,
-        ruleRequest = stub.copy(
-            id = VafsRuleId(" \n\t 123-234-abc-ABC \n\t "),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -46,13 +36,42 @@ fun validationIdTrim(command: VafsCommand, processor: VafsRuleProcessor) = runTe
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationIdEmpty(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationIdTrim(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
+    val ctx = VafsContext(
+        command = command,
+        state = VafsState.NONE,
+        workMode = VafsWorkMode.TEST,
+        ruleRequest = stub.copy(
+            id = VafsRuleId(" \n\t 123-234-abc-ABC \n\t "),
+        ),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
+        ),
+    )
+    processor.exec(ctx)
+    assertEquals(0, ctx.errors.size)
+    assertNotEquals(VafsState.FAILING, ctx.state)
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun validationIdEmpty(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
         ruleRequest = stub.copy(
             id = VafsRuleId(""),
+        ),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -64,13 +83,20 @@ fun validationIdEmpty(command: VafsCommand, processor: VafsRuleProcessor) = runT
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationIdFormat(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationIdFormat(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
         ruleRequest = stub.copy(
             id = VafsRuleId("!@#\$%^&*(),.{}"),
+        ),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)

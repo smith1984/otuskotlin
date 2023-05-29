@@ -6,6 +6,8 @@ import ru.beeline.vafs.biz.VafsRuleProcessor
 import ru.beeline.vafs.common.VafsContext
 import ru.beeline.vafs.common.VafsCorSettings
 import ru.beeline.vafs.common.models.*
+import ru.beeline.vafs.common.permissions.VafsPrincipalModel
+import ru.beeline.vafs.common.permissions.VafsUserGroups
 import ru.beeline.vafs.common.repo.DbRuleResponse
 import ru.beeline.vafs.repository.test.RuleRepositoryMock
 import kotlin.test.Test
@@ -63,6 +65,13 @@ class BizRepoCreateTest {
                 valueIsTrue = false,
                 typeOperationAB = VafsTypeOperationBool.AND,
                 typeOperationABCount = VafsTypeOperationBool.AND,
+            ),
+            principal = VafsPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    VafsUserGroups.USER,
+                    VafsUserGroups.TEST,
+                )
             ),
         )
         processor.exec(ctx)

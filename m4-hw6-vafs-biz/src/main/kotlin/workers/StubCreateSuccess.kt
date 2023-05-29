@@ -9,6 +9,7 @@ import ru.beeline.vafs.stub.VafsRuleStub
 
 fun ICorChainDsl<VafsContext>.stubCreateSuccess(title: String) = worker {
     this.title = title
+
     on { stubCase == VafsStubs.SUCCESS && state == VafsState.RUNNING }
     handle {
         state = VafsState.FINISHING

@@ -61,3 +61,6 @@ Voice Antifraud System -- это платформа для антифрод ан
 2. [m5-hw7-vafs-repo-stubs](m5-hw7-vafs-repo-stubs) - Интерфейс репозитория в виде стабов
 3. [m5-hw7-vafs-repo-in-memory](m5-hw7-vafs-repo-in-memory) - Репозиторий на базе кэша в памяти для тестирования
 4. [m5-hw7-vafs-repo-postgresql](m5-hw7-vafs-repo-postgresql) - Репозиторий на базе PostgreSQL
+
+## Аутентификация и авторизация
+1. [m6-hw8-vafs-auth](m6-hw8-vafs-auth) - Сопоставления разрешений и отношений для них, для определения прав пользователя

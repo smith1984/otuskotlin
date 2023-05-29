@@ -1,0 +1,200 @@
+### Create
+POST http://127.0.0.1:8080/v1/rule/create
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJydWxlLXVzZXJzIiwic3ViIjoib3BlcmF0b3ItMSIsImlzcyI6ImJlZWxpbmUiLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXX0.CH4H2vxzYvTL5McHoLtL2O_xlxFAzrrS3Vi7etN3x7c
+
+{
+  "requestType": "create",
+  "requestId": "123",
+  "debug": {
+    "mode": "prod"
+  },
+  "rule": {
+    "userId": "00e2567b-51d7-4d73-84ad-c4988e87293f",
+    "description": "rule description",
+    "priority": 1000,
+    "listForNumberA": [
+      "79993333333"
+    ],
+    "typeOperationA": "include",
+    "listForNumberB": [
+      "79993333331", "79993333337"
+    ],
+    "typeOperationB": "include",
+    "typeOperationCount": ">",
+    "targetCount": 10,
+    "valueIsTrue": true,
+    "typeOperationAB": "OR",
+    "typeOperationABCount": "OR"
+  }
+}
+
+### Get unexisted ID
+POST http://127.0.0.1:8080/v1/rule/read
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJydWxlLXVzZXJzIiwic3ViIjoib3BlcmF0b3ItMSIsImlzcyI6ImJlZWxpbmUiLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXX0.CH4H2vxzYvTL5McHoLtL2O_xlxFAzrrS3Vi7etN3x7c
+
+{
+  "requestType": "read",
+  "requestId": "12345",
+  "rule": {
+    "id": "99999"
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "badId"
+  }
+}
+
+### Read With Existed id
+POST http://127.0.0.1:8080/v1/rule/read
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJydWxlLXVzZXJzIiwic3ViIjoib3BlcmF0b3ItMSIsImlzcyI6ImJlZWxpbmUiLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXX0.CH4H2vxzYvTL5McHoLtL2O_xlxFAzrrS3Vi7etN3x7c
+
+{
+  "requestType": "read",
+  "requestId": "12345",
+  "rule": {
+    "id": "existed"
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Update
+POST http://localhost:8080/v1/rule/update
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJydWxlLXVzZXJzIiwic3ViIjoib3BlcmF0b3ItMSIsImlzcyI6ImJlZWxpbmUiLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXX0.CH4H2vxzYvTL5McHoLtL2O_xlxFAzrrS3Vi7etN3x7c
+
+{
+  "requestType": "update",
+  "requestId": "666",
+  "rule": {
+    "id": "updated",
+    "userId": "00e2567b-51d7-4d73-84ad-c4988e87293f",
+    "description": "rule description",
+    "priority": 1000,
+    "listForNumberA": [
+      "79993333333"
+    ],
+    "typeOperationA": "include",
+    "listForNumberB": [
+      "79993333336", "79993333337"
+    ],
+    "typeOperationB": "include",
+    "typeOperationCount": ">",
+    "targetCount": 10,
+    "valueIsTrue": true,
+    "typeOperationAB": "OR",
+    "typeOperationABCount": "OR",
+    "lock": "test-lock-id"
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Update with unexistedId
+POST http://localhost:8080/v1/rule/update
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJydWxlLXVzZXJzIiwic3ViIjoib3BlcmF0b3ItMSIsImlzcyI6ImJlZWxpbmUiLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXX0.CH4H2vxzYvTL5McHoLtL2O_xlxFAzrrS3Vi7etN3x7c
+
+{
+  "requestType": "update",
+  "requestId": "666",
+  "rule": {
+    "id": "updated",
+    "userId": "00e2567b-51d7-4d73-84ad-c4988e87293f",
+    "description": "rule description",
+    "priority": 1000,
+    "listForNumberA": [
+      "79993333333"
+    ],
+    "typeOperationA": "include",
+    "listForNumberB": [
+      "79993333336", "79993333337"
+    ],
+    "typeOperationB": "include",
+    "typeOperationCount": ">",
+    "targetCount": 10,
+    "valueIsTrue": true,
+    "typeOperationAB": "OR",
+    "typeOperationABCount": "OR",
+    "lock": "test-lock-id"
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "badId"
+  }
+}
+
+### Delete existed
+POST http://localhost:8080/v1/rule/delete
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJydWxlLXVzZXJzIiwic3ViIjoib3BlcmF0b3ItMSIsImlzcyI6ImJlZWxpbmUiLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXX0.CH4H2vxzYvTL5McHoLtL2O_xlxFAzrrS3Vi7etN3x7c
+
+{
+  "requestType": "delete",
+  "requestId": "deleteId",
+  "rule": {
+    "id": "existed_id"
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Delete non-existed
+POST http://localhost:8080/v1/rule/delete
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJydWxlLXVzZXJzIiwic3ViIjoib3BlcmF0b3ItMSIsImlzcyI6ImJlZWxpbmUiLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXX0.CH4H2vxzYvTL5McHoLtL2O_xlxFAzrrS3Vi7etN3x7c
+
+{
+  "requestType": "delete",
+  "requestId": "deleteId_unknown",
+  "rule": {
+    "id": "unknownId"
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "badId"
+  }
+}
+
+### Search by string
+POST http://localhost:8080/v1/rule/search
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJydWxlLXVzZXJzIiwic3ViIjoib3BlcmF0b3ItMSIsImlzcyI6ImJlZWxpbmUiLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXX0.CH4H2vxzYvTL5McHoLtL2O_xlxFAzrrS3Vi7etN3x7c
+
+{
+  "requestType": "search",
+  "requestId": "search_1",
+  "ruleFilter": {
+    "searchString": "rule"
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Search by string with error
+POST http://localhost:8080/v1/rule/search
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJydWxlLXVzZXJzIiwic3ViIjoib3BlcmF0b3ItMSIsImlzcyI6ImJlZWxpbmUiLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXX0.CH4H2vxzYvTL5McHoLtL2O_xlxFAzrrS3Vi7etN3x7c
+
+{
+  "requestType": "search",
+  "requestId": "search_2",
+  "adFilter": {
+    "searchString": "bad rule"
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "badSearchString"
+  }
+}

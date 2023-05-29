@@ -12,6 +12,6 @@ fun ICorChainDsl<VafsContext>.repoPrepareCreate(title: String) = worker {
     handle {
         ruleRepoRead = ruleValidated.copy()
         ruleRepoPrepare = ruleRepoRead
-
+        ruleRepoRead.userId = principal.id
     }
 }

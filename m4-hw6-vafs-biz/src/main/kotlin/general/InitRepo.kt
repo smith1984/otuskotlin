@@ -4,6 +4,7 @@ import ru.beeline.vafs.common.VafsContext
 import ru.beeline.vafs.common.helpers.errorAdministration
 import ru.beeline.vafs.common.helpers.fail
 import ru.beeline.vafs.common.models.VafsWorkMode
+import ru.beeline.vafs.common.permissions.VafsUserGroups
 import ru.beeline.vafs.common.repo.IRuleRepository
 import ru.beeline.vafs.cor.ICorChainDsl
 import ru.beeline.vafs.cor.worker
@@ -18,6 +19,7 @@ fun ICorChainDsl<VafsContext>.initRepo(title: String) = worker {
         ruleRepo = when {
             workMode == VafsWorkMode.TEST -> settings.repoTest
             workMode == VafsWorkMode.STUB -> settings.repoStub
+            principal.groups.contains(VafsUserGroups.TEST) -> settings.repoTest
             else -> settings.repoProd
         }
         if (workMode != VafsWorkMode.STUB && ruleRepo == IRuleRepository.NONE) fail(

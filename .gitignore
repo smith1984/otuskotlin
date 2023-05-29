@@ -8,4 +8,6 @@
 
 .idea
 
-/infra/volumes/**/data
+/infra/volumes/**/*data*
+/infra/volumes/keycloak/*
+!/infra/volumes/keycloak/realm-export.json

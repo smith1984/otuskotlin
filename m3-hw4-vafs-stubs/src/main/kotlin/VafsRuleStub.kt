@@ -8,7 +8,8 @@ import ru.beeline.vafs.stub.VafsRuleStubSample.RULE_BASE
 
 object VafsRuleStub {
     fun get(): VafsRule = RULE_BASE.copy()
-    
+    fun getNew(): VafsRule = RULE_BASE.copy(id = VafsRuleId.NONE)
+
     fun prepareSearchList(filter: String) = listOf(
         generateVafsRule(get(), "rule-123-01", filter),
         generateVafsRule(get(), "rule-123-02", filter),

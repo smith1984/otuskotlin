@@ -3,6 +3,10 @@ package ru.beeline.vafs.biz
 import ru.beeline.vafs.biz.general.initRepo
 import ru.beeline.vafs.biz.general.prepareResult
 import ru.beeline.vafs.biz.groups.*
+import ru.beeline.vafs.biz.permissions.accessValidation
+import ru.beeline.vafs.biz.permissions.chainPermissions
+import ru.beeline.vafs.biz.permissions.frontPermissions
+import ru.beeline.vafs.biz.permissions.searchTypes
 import ru.beeline.vafs.biz.repo.*
 import ru.beeline.vafs.biz.validation.*
 import ru.beeline.vafs.biz.workers.*
@@ -33,7 +37,7 @@ class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings(
                     stubValidationBadValueIsTrue("Имитация ошибки валидации булевого значения применяемого к счётчику")
                     stubValidationBadTypeOperationAB("Имитация ошибки валидации типа операции между списками A и B")
                     stubValidationBadTypeOperationABCount("Имитация ошибки валидации типа операции между списками и счётчиком")
-                    stubDbError("Имитация ошибки работы с BД")
+                    stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
                 validation {
@@ -67,11 +71,14 @@ class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings(
 
                     finishRuleValidation("Завершение проверок")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика сохранения"
                     repoPrepareCreate("Подготовка объекта для сохранения")
+                    accessValidation("Вычисление прав доступа")
                     repoCreate("Создание правила в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Получить правило", VafsCommand.READ) {
@@ -90,15 +97,18 @@ class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings(
 
                     finishRuleValidation("Успешное завершение процедуры валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика чтения"
                     repoRead("Чтение правила из БД")
+                    accessValidation("Вычисление прав доступа")
                     worker {
                         title = "Подготовка ответа для Read"
                         on { state == VafsState.RUNNING }
                         handle { ruleRepoDone = ruleRepoRead }
                     }
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Изменить правило", VafsCommand.UPDATE) {
@@ -156,12 +166,15 @@ class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings(
 
                     finishRuleValidation("Успешное завершение процедуры валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика сохранения изменения"
                     repoRead("Чтение правила из БД")
+                    accessValidation("Вычисление прав доступа")
                     repoPrepareUpdate("Подготовка объекта для обновления")
                     repoUpdate("Обновление правила в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Удалить правило", VafsCommand.DELETE) {
@@ -184,12 +197,15 @@ class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings(
                     validateLockProperFormat("Проверка формата lock")
                     finishRuleValidation("Успешное завершение процедуры валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика удаления"
                     repoRead("Чтение правила из БД")
+                    accessValidation("Вычисление прав доступа")
                     repoPrepareDelete("Подготовка объекта для удаления")
                     repoDelete("Удаление правила из БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Поиск правил", VafsCommand.SEARCH) {
@@ -204,7 +220,10 @@ class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings(
 
                     finishRuleFilterValidation("Успешное завершение процедуры валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
+                searchTypes("Подготовка поискового запроса")
                 repoSearch("Поиск правил в БД по фильтру")
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
         }.build()

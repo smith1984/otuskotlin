@@ -368,6 +368,7 @@ components:
         - read
         - update
         - delete
+        - create
 
     RuleResponseSingle:
       allOf:

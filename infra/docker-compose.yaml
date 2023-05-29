@@ -8,8 +8,36 @@ services:
       - fluent-bit
       - liquibase
       - postgres
+      - keycloak
     env_file:
       - .env
+    volumes:
+      - "./volumes/app/application.yaml:/app/resources/application.yaml"
+
+  postgres-keycloak:
+    image: postgres:15.2
+    container_name: postgres-keycloak
+    hostname: postgres-keycloak
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 15s
+      interval: 5s
+      retries: 10
+    volumes:
+      - "./volumes/postgres-keycloak/data:/data/postgres"
+    env_file:
+      - .env_keycloak
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.1
+    command:
+      - start-dev
+    env_file:
+      - .env_keycloak
+    ports:
+      - 8081:8080
+    depends_on:
+      - postgres-keycloak
 
   postgres:
     image: postgres:15.2
@@ -17,10 +45,9 @@ services:
     hostname: postgres
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
-      timeout: 45s
-      interval: 10s
+      timeout: 15s
+      interval: 5s
       retries: 10
-    restart: always
     env_file:
       - .env
     ports:
@@ -31,7 +58,7 @@ services:
 
   liquibase:
     container_name: liquibase
-    image: liquibase/liquibase
+    image: liquibase/liquibase:4.21.1
     depends_on:
       postgres:
         condition: service_healthy
@@ -41,13 +68,13 @@ services:
 
   fluent-bit:
     container_name: fluent-bit
-    image: fluent/fluent-bit
+    image: fluent/fluent-bit:2.1.4
     ports:
       - "24224:24224"
       - "24224:24224/udp"
       - "2020:2020"
     env_file:
-      - .env
+      - .env_logging
     volumes:
       - "./volumes/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf"
       - "./volumes/fluent-bit/parsers.conf:/fluent-bit/etc/parsers.conf"
@@ -55,9 +82,9 @@ services:
 
   opensearch:
     container_name: opensearch
-    image: opensearchproject/opensearch:latest
+    image: opensearchproject/opensearch:2.7.0
     env_file:
-      - .env
+      - .env_logging
     ports:
       - '9200:9200'
       - '9600:9600'
@@ -69,10 +96,10 @@ services:
         soft: 65536
         hard: 65536
     volumes:
-      - "./volumes/opensearch/data:/usr/share/opensearch/data"
+      - "./volumes/opensearch/data:/usr/share/opensearch/data:rw"
 
   dashboards:
-    image: opensearchproject/opensearch-dashboards:latest
+    image: opensearchproject/opensearch-dashboards:2.7.0
     container_name: opensearch-dashboards
     ports:
       - 5601:5601

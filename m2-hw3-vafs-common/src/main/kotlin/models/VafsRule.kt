@@ -1,5 +1,8 @@
 package ru.beeline.vafs.common.models
 
+import ru.beeline.vafs.common.permissions.VafsPrincipalRelations
+import ru.beeline.vafs.common.permissions.VafsRulePermissionOperator
+
 data class VafsRule(
     var id: VafsRuleId = VafsRuleId.NONE,
     var userId: VafsUserId = VafsUserId.NONE,
@@ -15,6 +18,7 @@ data class VafsRule(
     var typeOperationAB: VafsTypeOperationBool = VafsTypeOperationBool.NONE,
     var typeOperationABCount: VafsTypeOperationBool = VafsTypeOperationBool.NONE,
     var lock: VafsRuleLock = VafsRuleLock.NONE,
+    val principalRelations: MutableSet<VafsPrincipalRelations> = mutableSetOf(),
     val permissionsOperator: MutableSet<VafsRulePermissionOperator> = mutableSetOf()
 ) {
     fun isEmpty() = this == NONE

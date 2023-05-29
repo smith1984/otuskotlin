@@ -5,23 +5,31 @@ import kotlinx.coroutines.test.runTest
 import ru.beeline.vafs.biz.VafsRuleProcessor
 import ru.beeline.vafs.common.VafsContext
 import ru.beeline.vafs.common.models.VafsCommand
+import ru.beeline.vafs.common.models.VafsRule
 import ru.beeline.vafs.common.models.VafsState
 import ru.beeline.vafs.common.models.VafsWorkMode
+import ru.beeline.vafs.common.permissions.VafsPrincipalModel
+import ru.beeline.vafs.common.permissions.VafsUserGroups
 import ru.beeline.vafs.stub.VafsRuleStub
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 
-private val stub = VafsRuleStub.get()
-
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationListNumberACorrect(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationListNumberACorrect(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
-        ruleRequest = stub
+        ruleRequest = stub,
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     
@@ -31,13 +39,20 @@ fun validationListNumberACorrect(command: VafsCommand, processor: VafsRuleProces
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationListNumberATrim(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationListNumberATrim(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
         ruleRequest = stub.copy(
             listForNumberA = listOf("\n\t   79995551111\t\n")
+        ),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -47,13 +62,20 @@ fun validationListNumberATrim(command: VafsCommand, processor: VafsRuleProcessor
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationListNumberAEmpty(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationListNumberAEmpty(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
         ruleRequest = stub.copy(
             listForNumberA = listOf()
+        ),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -65,13 +87,20 @@ fun validationListNumberAEmpty(command: VafsCommand, processor: VafsRuleProcesso
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationListNumberASymbols(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationListNumberASymbols(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
         ruleRequest = stub.copy(
             listForNumberA = listOf("79995551111", "+859", "asdf", "@!$")
+        ),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
