@@ -5,20 +5,27 @@ import kotlinx.coroutines.test.runTest
 import ru.beeline.vafs.biz.VafsRuleProcessor
 import ru.beeline.vafs.common.VafsContext
 import ru.beeline.vafs.common.models.*
+import ru.beeline.vafs.common.permissions.VafsPrincipalModel
+import ru.beeline.vafs.common.permissions.VafsUserGroups
 import ru.beeline.vafs.stub.VafsRuleStub
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
-private val stub = VafsRuleStub.get()
-
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationTypeOperationABCorrect(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationTypeOperationABCorrect(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
-        ruleRequest = stub
+        ruleRequest = stub,
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     
@@ -28,13 +35,20 @@ fun validationTypeOperationABCorrect(command: VafsCommand, processor: VafsRulePr
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationTypeOperationABEmpty(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationTypeOperationABEmpty(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
         ruleRequest = stub.copy(
             typeOperationAB = VafsTypeOperationBool.NONE,
+        ),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)

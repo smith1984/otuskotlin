@@ -11,6 +11,8 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.server.testing.*
 import org.junit.Test
 import ru.beeline.api.v1.models.*
+import ru.beeline.vafs.ktor.config.KtorAuthConfig
+import ru.otus.otuskotlin.marketplace.app.ru.otus.otuskotlin.marketplace.auth.addAuth
 import kotlin.test.assertEquals
 
 class V1RuleStubApiTest {
@@ -41,6 +43,7 @@ class V1RuleStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleCreateResponse>()
@@ -62,6 +65,7 @@ class V1RuleStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleReadResponse>()
@@ -96,6 +100,7 @@ class V1RuleStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleUpdateResponse>()
@@ -119,6 +124,7 @@ class V1RuleStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleDeleteResponse>()
@@ -140,6 +146,7 @@ class V1RuleStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleSearchResponse>()

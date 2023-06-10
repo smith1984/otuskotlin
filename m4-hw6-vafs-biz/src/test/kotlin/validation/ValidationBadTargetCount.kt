@@ -5,22 +5,30 @@ import kotlinx.coroutines.test.runTest
 import ru.beeline.vafs.biz.VafsRuleProcessor
 import ru.beeline.vafs.common.VafsContext
 import ru.beeline.vafs.common.models.VafsCommand
+import ru.beeline.vafs.common.models.VafsRule
 import ru.beeline.vafs.common.models.VafsState
 import ru.beeline.vafs.common.models.VafsWorkMode
+import ru.beeline.vafs.common.permissions.VafsPrincipalModel
+import ru.beeline.vafs.common.permissions.VafsUserGroups
 import ru.beeline.vafs.stub.VafsRuleStub
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
-private val stub = VafsRuleStub.get()
-
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationTargetCountCorrect(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationTargetCountCorrect(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
-        ruleRequest = stub
+        ruleRequest = stub,
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     
@@ -31,13 +39,20 @@ fun validationTargetCountCorrect(command: VafsCommand, processor: VafsRuleProces
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationTargetCountEmpty(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationTargetCountEmpty(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
         ruleRequest = stub.copy(
             targetCount = 0
+        ),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -49,13 +64,20 @@ fun validationTargetCountEmpty(command: VafsCommand, processor: VafsRuleProcesso
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationTargetCountLessLowerBound(command: VafsCommand, processor: VafsRuleProcessor) = runTest {
+fun validationTargetCountLessLowerBound(command: VafsCommand, processor: VafsRuleProcessor, stub: VafsRule) = runTest {
     val ctx = VafsContext(
         command = command,
         state = VafsState.NONE,
         workMode = VafsWorkMode.TEST,
         ruleRequest = stub.copy(
             targetCount = -1
+        ),
+        principal = VafsPrincipalModel(
+            id = stub.userId,
+            groups = setOf(
+                VafsUserGroups.USER,
+                VafsUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)

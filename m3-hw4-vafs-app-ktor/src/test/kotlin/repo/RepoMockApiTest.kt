@@ -17,9 +17,11 @@ import ru.beeline.vafs.common.models.VafsRuleLock
 import ru.beeline.vafs.common.repo.DbRuleResponse
 import ru.beeline.vafs.common.repo.DbRulesResponse
 import ru.beeline.vafs.ktor.VafsAppSettings
+import ru.beeline.vafs.ktor.config.KtorAuthConfig
 import ru.beeline.vafs.ktor.module
 import ru.beeline.vafs.repository.test.RuleRepositoryMock
 import ru.beeline.vafs.stub.VafsRuleStub
+import ru.otus.otuskotlin.marketplace.app.ru.otus.otuskotlin.marketplace.auth.addAuth
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
@@ -44,7 +46,7 @@ class RepoMockApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
 
         val client = myClient()
@@ -72,6 +74,7 @@ class RepoMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleCreateResponse>()
@@ -110,7 +113,7 @@ class RepoMockApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
 
         val client = myClient()
@@ -124,6 +127,7 @@ class RepoMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleReadResponse>()
@@ -157,7 +161,7 @@ class RepoMockApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
         val client = myClient()
 
@@ -200,6 +204,7 @@ class RepoMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleUpdateResponse>()
@@ -247,7 +252,7 @@ class RepoMockApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
 
         val client = myClient()
@@ -266,6 +271,7 @@ class RepoMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleDeleteResponse>()
@@ -295,7 +301,7 @@ class RepoMockApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
         val client = myClient()
 
@@ -308,6 +314,7 @@ class RepoMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleSearchResponse>()

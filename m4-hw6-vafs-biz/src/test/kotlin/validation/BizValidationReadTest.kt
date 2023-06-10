@@ -4,6 +4,7 @@ import ru.beeline.vafs.biz.VafsRuleProcessor
 import ru.beeline.vafs.common.VafsCorSettings
 import ru.beeline.vafs.common.models.VafsCommand
 import ru.beeline.vafs.repository.stub.RuleRepoStub
+import ru.beeline.vafs.stub.VafsRuleStub
 import kotlin.test.Test
 
 class BizValidationReadTest {
@@ -16,10 +17,12 @@ class BizValidationReadTest {
     }
     private val processor by lazy { VafsRuleProcessor(settings) }
 
-    @Test fun correctId() = validationIdCorrect(command, processor)
-    @Test fun trimId() = validationIdTrim(command, processor)
-    @Test fun emptyId() = validationIdEmpty(command, processor)
-    @Test fun badFormatId() = validationIdFormat(command, processor)
+    private val stub = VafsRuleStub.get()
+
+    @Test fun correctId() = validationIdCorrect(command, processor, stub)
+    @Test fun trimId() = validationIdTrim(command, processor, stub)
+    @Test fun emptyId() = validationIdEmpty(command, processor, stub)
+    @Test fun badFormatId() = validationIdFormat(command, processor, stub)
 
 }
 

@@ -4,6 +4,7 @@ import ru.beeline.vafs.biz.VafsRuleProcessor
 import ru.beeline.vafs.common.VafsCorSettings
 import ru.beeline.vafs.common.models.VafsCommand
 import ru.beeline.vafs.repository.stub.RuleRepoStub
+import ru.beeline.vafs.stub.VafsRuleStub
 import validation.validationLockCorrect
 import validation.validationLockEmpty
 import validation.validationLockFormat
@@ -20,15 +21,17 @@ class BizValidationDeleteTest {
     }
     private val processor by lazy { VafsRuleProcessor(settings) }
 
-    @Test fun correctId() = validationIdCorrect(command, processor)
-    @Test fun trimId() = validationIdTrim(command, processor)
-    @Test fun emptyId() = validationIdEmpty(command, processor)
-    @Test fun badFormatId() = validationIdFormat(command, processor)
+    private val stub = VafsRuleStub.get()
 
-    @Test fun correctLock() = validationLockCorrect(command, processor)
-    @Test fun trimLock() = validationLockTrim(command, processor)
-    @Test fun emptyLock() = validationLockEmpty(command, processor)
-    @Test fun badFormatLock() = validationLockFormat(command, processor)
+    @Test fun correctId() = validationIdCorrect(command, processor, stub)
+    @Test fun trimId() = validationIdTrim(command, processor, stub)
+    @Test fun emptyId() = validationIdEmpty(command, processor, stub)
+    @Test fun badFormatId() = validationIdFormat(command, processor, stub)
+
+    @Test fun correctLock() = validationLockCorrect(command, processor, stub)
+    @Test fun trimLock() = validationLockTrim(command, processor, stub)
+    @Test fun emptyLock() = validationLockEmpty(command, processor, stub)
+    @Test fun badFormatLock() = validationLockFormat(command, processor, stub)
 
 }
 

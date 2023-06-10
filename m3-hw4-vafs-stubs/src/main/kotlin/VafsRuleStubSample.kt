@@ -1,6 +1,7 @@
 package ru.beeline.vafs.stub
 
 import ru.beeline.vafs.common.models.*
+import ru.beeline.vafs.common.permissions.VafsRulePermissionOperator
 
 object VafsRuleStubSample {
     val RULE_BASE: VafsRule
@@ -25,12 +26,9 @@ object VafsRuleStubSample {
                 VafsRulePermissionOperator.READ,
                 VafsRulePermissionOperator.UPDATE,
                 VafsRulePermissionOperator.DELETE,
+                VafsRulePermissionOperator.CREATE
+
             )
         )
 
-    val RULE_PERMISSION_READ = RULE_BASE.copy(
-        permissionsOperator = mutableSetOf(
-            VafsRulePermissionOperator.READ,
-        )
-    )
 }

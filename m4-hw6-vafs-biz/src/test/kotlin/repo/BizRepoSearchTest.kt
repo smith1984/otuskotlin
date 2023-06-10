@@ -7,6 +7,8 @@ import ru.beeline.vafs.biz.VafsRuleProcessor
 import ru.beeline.vafs.common.VafsContext
 import ru.beeline.vafs.common.VafsCorSettings
 import ru.beeline.vafs.common.models.*
+import ru.beeline.vafs.common.permissions.VafsPrincipalModel
+import ru.beeline.vafs.common.permissions.VafsUserGroups
 import ru.beeline.vafs.common.repo.DbRulesResponse
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -55,6 +57,13 @@ class BizRepoSearchTest {
             workMode = VafsWorkMode.TEST,
             ruleFilterRequest = VafsRuleFilter(
                 searchString = "description",
+            ),
+            principal = VafsPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    VafsUserGroups.USER,
+                    VafsUserGroups.TEST,
+                )
             ),
         )
         processor.exec(ctx)

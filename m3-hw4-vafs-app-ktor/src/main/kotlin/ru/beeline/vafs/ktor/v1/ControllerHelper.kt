@@ -1,6 +1,8 @@
 package ru.beeline.vafs.ktor.v1
 
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import kotlinx.datetime.Clock
@@ -12,6 +14,7 @@ import ru.beeline.vafs.common.helpers.asVafsError
 import ru.beeline.vafs.common.models.VafsCommand
 import ru.beeline.vafs.common.models.VafsState
 import ru.beeline.vafs.ktor.VafsAppSettings
+import ru.beeline.vafs.ktor.base.toModel
 import ru.beeline.vafs.logging.common.ILogWrapper
 import ru.beeline.vafs.mappers.fromTransport
 import ru.beeline.vafs.mappers.toTransportRule
@@ -28,6 +31,7 @@ suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IRespo
     val processor = appSettings.processor
     try {
         logger.doWithLogging(id = logId) {
+            ctx.principal = principal<JWTPrincipal>().toModel()
             val request = receive<Q>()
             ctx.fromTransport(request)
             logger.info(

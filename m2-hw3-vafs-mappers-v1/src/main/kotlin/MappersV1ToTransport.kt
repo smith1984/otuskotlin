@@ -3,6 +3,7 @@ package ru.beeline.vafs.mappers
 import ru.beeline.api.v1.models.*
 import ru.beeline.vafs.common.VafsContext
 import ru.beeline.vafs.common.models.*
+import ru.beeline.vafs.common.permissions.VafsRulePermissionOperator
 import ru.beeline.vafs.mappers.exceptions.UnknownVafsCommand
 
 fun VafsContext.toTransportRule(): IResponse = when (val cmd = command) {
@@ -92,6 +93,8 @@ private fun VafsRulePermissionOperator.toTransportRule() = when (this) {
     VafsRulePermissionOperator.READ -> RulePermissions.READ
     VafsRulePermissionOperator.UPDATE -> RulePermissions.UPDATE
     VafsRulePermissionOperator.DELETE -> RulePermissions.DELETE
+    VafsRulePermissionOperator.CREATE -> RulePermissions.CREATE
+
 }
 
 private fun VafsTypeOperationList.toTransportRule(): TypeOperation? = when (this) {

@@ -7,6 +7,8 @@ import ru.beeline.vafs.biz.VafsRuleProcessor
 import ru.beeline.vafs.common.VafsContext
 import ru.beeline.vafs.common.VafsCorSettings
 import ru.beeline.vafs.common.models.*
+import ru.beeline.vafs.common.permissions.VafsPrincipalModel
+import ru.beeline.vafs.common.permissions.VafsUserGroups
 import ru.beeline.vafs.common.repo.DbRuleResponse
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -88,6 +90,13 @@ class BizRepoUpdateTest {
             state = VafsState.NONE,
             workMode = VafsWorkMode.TEST,
             ruleRequest = ruleToUpdate,
+            principal = VafsPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    VafsUserGroups.USER,
+                    VafsUserGroups.TEST,
+                )
+            ),
         )
         processor.exec(ctx)
         assertEquals(VafsState.FINISHING, ctx.state)

@@ -1,11 +1,11 @@
-package ru.beeline.vafs.ktor.ru.beeline.vafs.ktor.plugins
+package ru.beeline.vafs.ktor.plugins
 
 import io.ktor.server.application.*
 
-import ru.beeline.vafs.ktor.ru.beeline.vafs.ktor.config.PostgresConfig
 import ru.beeline.vafs.repo.posgresql.RuleRepoPostgresql
 import ru.beeline.vafs.repo.posgresql.SqlProperties
 import ru.beeline.vafs.common.repo.IRuleRepository
+import ru.beeline.vafs.ktor.config.PostgresConfig
 import ru.beeline.vafs.repo.inmemory.RuleRepoInMemory
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes

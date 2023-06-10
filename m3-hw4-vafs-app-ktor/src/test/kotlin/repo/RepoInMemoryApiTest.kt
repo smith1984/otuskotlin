@@ -14,9 +14,11 @@ import ru.beeline.api.v1.models.*
 import ru.beeline.vafs.common.VafsCorSettings
 import ru.beeline.vafs.common.models.*
 import ru.beeline.vafs.ktor.VafsAppSettings
+import ru.beeline.vafs.ktor.config.KtorAuthConfig
 import ru.beeline.vafs.ktor.module
 import ru.beeline.vafs.repo.inmemory.RuleRepoInMemory
 import ru.beeline.vafs.stub.VafsRuleStub
+import ru.otus.otuskotlin.marketplace.app.ru.otus.otuskotlin.marketplace.auth.addAuth
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
@@ -39,6 +41,8 @@ class RepoInMemoryApiTest {
         lock = VafsRuleLock(uuidOld)
     }
 
+    private val userId = initRule.userId
+
     @Test
     fun create() = testApplication {
         val repo = RuleRepoInMemory(initObjects = listOf(initRule), randomUuid = { uuidNew })
@@ -48,7 +52,7 @@ class RepoInMemoryApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
 
         val client = myClient()
@@ -76,6 +80,7 @@ class RepoInMemoryApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleCreateResponse>()
@@ -103,7 +108,7 @@ class RepoInMemoryApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
 
         val client = myClient()
@@ -117,6 +122,7 @@ class RepoInMemoryApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleReadResponse>()
@@ -133,7 +139,7 @@ class RepoInMemoryApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
         val client = myClient()
 
@@ -162,6 +168,7 @@ class RepoInMemoryApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleUpdateResponse>()
@@ -189,7 +196,7 @@ class RepoInMemoryApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
         val client = myClient()
 
@@ -205,6 +212,7 @@ class RepoInMemoryApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleDeleteResponse>()
@@ -221,7 +229,7 @@ class RepoInMemoryApiTest {
         }
 
         application {
-            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo)))
+            module(VafsAppSettings(corSettings = VafsCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
         val client = myClient()
 
@@ -234,6 +242,7 @@ class RepoInMemoryApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<RuleSearchResponse>()
