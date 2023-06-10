@@ -1,0 +1,45 @@
+### Token by password
+POST http://localhost:8081/realms/beeline-vafs/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=beeline-vafs-service&grant_type=password&username=operator-1&password=vafs
+
+> {% client.global.set("auth_token", response.body.access_token);
+    client.global.set("refresh_token", response.body.refresh_token); %}
+
+### Token by refresh token
+POST http://localhost:8081/realms/beeline-vafs/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=beeline-vafs-service&grant_type=refresh_token&refresh_token={{refresh_token}}
+
+### Create
+POST http://127.0.0.1:8080/v1/rule/create
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "requestType": "create",
+  "requestId": "123",
+  "debug": {
+    "mode": "prod"
+  },
+  "rule": {
+    "userId": "00e2567b-51d7-4d73-84ad-c4988e87293f",
+    "description": "rule description",
+    "priority": 1000,
+    "listForNumberA": [
+      "79993333333"
+    ],
+    "typeOperationA": "include",
+    "listForNumberB": [
+      "79993333331", "79993333337"
+    ],
+    "typeOperationB": "include",
+    "typeOperationCount": ">",
+    "targetCount": 10,
+    "valueIsTrue": true,
+    "typeOperationAB": "OR",
+    "typeOperationABCount": "OR"
+  }
+}

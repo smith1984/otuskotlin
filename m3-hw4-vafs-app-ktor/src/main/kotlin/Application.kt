@@ -1,7 +1,6 @@
 package ru.beeline.vafs.ktor
 
 import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -17,7 +16,6 @@ import io.ktor.server.plugins.defaultheaders.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
-import net.mamoe.yamlkt.toYamlElementOrNull
 import org.slf4j.event.Level
 import ru.beeline.vafs.api.v1.apiV1Mapper
 import ru.beeline.vafs.ktor.base.resolveAlgorithm
