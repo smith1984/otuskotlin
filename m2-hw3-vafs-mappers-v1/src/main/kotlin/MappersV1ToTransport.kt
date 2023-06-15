@@ -16,7 +16,6 @@ fun VafsContext.toTransportRule(): IResponse = when (val cmd = command) {
 }
 
 fun VafsContext.toTransportCreate() = RuleCreateResponse(
-    responseType = "create",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == VafsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
@@ -24,7 +23,6 @@ fun VafsContext.toTransportCreate() = RuleCreateResponse(
 )
 
 fun VafsContext.toTransportRead() = RuleReadResponse(
-    responseType = "read",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == VafsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
@@ -32,7 +30,6 @@ fun VafsContext.toTransportRead() = RuleReadResponse(
 )
 
 fun VafsContext.toTransportUpdate() = RuleUpdateResponse(
-    responseType = "update",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == VafsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
@@ -40,7 +37,6 @@ fun VafsContext.toTransportUpdate() = RuleUpdateResponse(
 )
 
 fun VafsContext.toTransportDelete() = RuleDeleteResponse(
-    responseType = "delete",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == VafsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
@@ -48,7 +44,6 @@ fun VafsContext.toTransportDelete() = RuleDeleteResponse(
 )
 
 fun VafsContext.toTransportSearch() = RuleSearchResponse(
-    responseType = "search",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == VafsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),

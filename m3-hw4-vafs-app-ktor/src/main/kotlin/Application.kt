@@ -13,6 +13,8 @@ import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.defaultheaders.*
+import io.ktor.server.plugins.openapi.*
+import io.ktor.server.plugins.swagger.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
@@ -24,7 +26,7 @@ import ru.beeline.vafs.ktor.plugins.initAppSettings
 import ru.beeline.vafs.ktor.v1.v1Rule
 import ru.beeline.vafs.ktor.v1.wsHandlerV1
 import ru.beeline.vafs.logging.logback.LogWrapperLogback
-import java.util.*
+
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -95,6 +97,11 @@ fun Application.module(appSettings: VafsAppSettings = initAppSettings()) {
         get("/") {
             call.respondText("Hello, world!")
         }
+
+        openAPI(path="openapi/rule/v1", swaggerFile = "./specs/specs-rule-v1.yaml") {
+        }
+
+        swaggerUI(path = "swagger/rule/log", swaggerFile = "./specs/specs-rule-log.yaml")
 
         route("v1") {
             authenticate("auth-jwt") {
