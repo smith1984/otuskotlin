@@ -1,14 +1,43 @@
 version: '3'
 services:
-  app:
+  sleep:
+    image: alpine
+    command:
+      - /bin/sh
+      - -c
+      - |
+        echo "sleep for 15 sec"
+        sleep 15
+    depends_on:
+      - backoffice-app
+
+  postman:
+    image: dannydainton/htmlextra
+    container_name: postman
+    volumes:
+      - "./volumes/postman/:/etc/newman"
+    depends_on:
+      sleep:
+        condition: service_completed_successfully
+    command:
+      run /etc/newman/collections/otuskotlin.postman_collection.json
+      --environment /etc/newman/env.json
+      --reporters cli,htmlextra
+
+  backoffice-app:
     image: smith1984/vafs-app:0.0.1
+    container_name: backoffice-app
     ports:
       - "8080:8080"
     depends_on:
-      - fluent-bit
-      - liquibase
-      - postgres
-      - keycloak
+      fluent-bit:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+      liquibase:
+        condition: service_completed_successfully
     env_file:
       - .env
     volumes:
@@ -23,12 +52,15 @@ services:
       timeout: 15s
       interval: 5s
       retries: 10
+    ports:
+      - "5433:5432"
     volumes:
       - "./volumes/postgres-keycloak/data:/data/postgres"
     env_file:
       - .env_keycloak
 
   keycloak:
+    hostname: keycloak
     image: quay.io/keycloak/keycloak:21.1.1
     command:
       - start-dev
@@ -37,7 +69,8 @@ services:
     ports:
       - 8081:8080
     depends_on:
-      - postgres-keycloak
+      postgres-keycloak:
+        condition: service_healthy
 
   postgres:
     image: postgres:15.2

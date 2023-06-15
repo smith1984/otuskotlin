@@ -1,0 +1,554 @@
+{
+	"info": {
+		"_postman_id": "00e3140e-0418-4c95-977d-a239502be8fd",
+		"name": "otuskotlin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25545992"
+	},
+	"item": [
+		{
+			"name": "Token by password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get tokens by password\", function () {",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Verif get tokens\", function () {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.expires_in).to.eql(300);",
+							"    pm.expect(responseJson.refresh_expires_in).to.eql(1800);",
+							"    pm.expect(responseJson.token_type).to.eql(\"Bearer\");",
+							"    pm.expect(responseJson.scope).to.eql(\"VAFS\");",
+							"});",
+							"",
+							"pm.collectionVariables.set(\"authToken\", pm.response.json().access_token);",
+							"pm.collectionVariables.set(\"refreshToken\", pm.response.json().refresh_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "beeline-vafs-service",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "operator-1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "vafs",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{hostKeycloak}}:{{portKeycloak}}/realms/beeline-vafs/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"{{hostKeycloak}}"
+					],
+					"port": "{{portKeycloak}}",
+					"path": [
+						"realms",
+						"beeline-vafs",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token by refresh token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get tokens by refresh token\", function () {",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Verif get tokens\", function () {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.expires_in).to.eql(300);",
+							"    pm.expect(responseJson.refresh_expires_in).to.eql(1800);",
+							"    pm.expect(responseJson.token_type).to.eql(\"Bearer\");",
+							"    pm.expect(responseJson.scope).to.eql(\"VAFS\");",
+							"});",
+							"",
+							"pm.collectionVariables.set(\"authToken\", pm.response.json().access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "beeline-vafs-service",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "refresh_token",
+							"type": "text"
+						},
+						{
+							"key": "refresh_token",
+							"value": "{{refreshToken}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{hostKeycloak}}:{{portKeycloak}}/realms/beeline-vafs/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"{{hostKeycloak}}"
+					],
+					"port": "{{portKeycloak}}",
+					"path": [
+						"realms",
+						"beeline-vafs",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create rule\", function () {",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Created rule\", function () {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.result).to.eql(\"success\");",
+							"    pm.expect(responseJson.errors).to.eql(null);",
+							"    pm.expect(responseJson.requestId).to.eql(\"123\");",
+							"    pm.expect(responseJson.responseType).to.eql(\"create\");",
+							"    pm.expect(responseJson.rule.userId).to.eql(\"operator-1\");",
+							"    pm.expect(responseJson.permissions).to.eql(Array[\"read\", \"update\", \"delete\"]);",
+							"});",
+							"",
+							"pm.collectionVariables.set(\"idCreatedRule\", pm.response.json().rule.id);",
+							"pm.collectionVariables.set(\"lockRule\", pm.response.json().rule.lock);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"requestType\": \"create\",\n  \"requestId\": \"123\",\n  \"debug\": {\n    \"mode\": \"prod\"\n  },\n  \"rule\": {\n    \"userId\": \"00e2567b-51d7-4d73-84ad-c4988e87293f\",\n    \"description\": \"rule description\",\n    \"priority\": 1000,\n    \"listForNumberA\": [\n      \"79993333333\"\n    ],\n    \"typeOperationA\": \"include\",\n    \"listForNumberB\": [\n      \"79993333331\", \"79993333337\"\n    ],\n    \"typeOperationB\": \"include\",\n    \"typeOperationCount\": \">\",\n    \"targetCount\": 10,\n    \"valueIsTrue\": true,\n    \"typeOperationAB\": \"OR\",\n    \"typeOperationABCount\": \"OR\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://{{hostApp}}:{{portApp}}/v1/rule/create",
+					"protocol": "http",
+					"host": [
+						"{{hostApp}}"
+					],
+					"port": "{{portApp}}",
+					"path": [
+						"v1",
+						"rule",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Read rule\", function () {",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Response read rule\", function () {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.result).to.eql(\"success\");",
+							"    pm.expect(responseJson.errors).to.eql(null);",
+							"    pm.expect(responseJson.requestId).to.eql(\"1234567\");",
+							"    pm.expect(responseJson.responseType).to.eql(\"read\");",
+							"    pm.expect(responseJson.rule.description).to.eql(\"rule description\");",
+							"    pm.expect(responseJson.rule.userId).to.eql(\"operator-1\");",
+							"    pm.expect(responseJson.permissions).to.eql(Array[\"read\", \"update\", \"delete\"]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"requestType\": \"read\",\n  \"requestId\": \"1234567\",\n  \"debug\": {\n    \"mode\": \"prod\"\n  },\n  \"rule\": {\n    \"id\": \"{{idCreatedRule}}\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://{{hostApp}}:{{portApp}}/v1/rule/read",
+					"protocol": "http",
+					"host": [
+						"{{hostApp}}"
+					],
+					"port": "{{portApp}}",
+					"path": [
+						"v1",
+						"rule",
+						"read"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update rule\", function () {",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Updated rule\", function () {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.result).to.eql(\"success\");",
+							"    pm.expect(responseJson.errors).to.eql(null);",
+							"    pm.expect(responseJson.requestId).to.eql(\"12345\");",
+							"    pm.expect(responseJson.responseType).to.eql(\"update\");",
+							"    pm.expect(responseJson.rule.description).to.eql(\"rule description updated\");",
+							"    pm.expect(responseJson.rule.userId).to.eql(\"operator-1\");",
+							"    pm.expect(responseJson.permissions).to.eql(Array[\"read\", \"update\", \"delete\"]);",
+							"});",
+							"",
+							"pm.collectionVariables.set(\"lockRule\", pm.response.json().rule.lock);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"requestType\": \"update\",\n  \"requestId\": \"12345\",\n  \"debug\": {\n    \"mode\": \"prod\"\n  },\n  \"rule\": {\n    \"id\": \"{{idCreatedRule}}\",\n    \"userId\": \"00e2567b-51d7-4d73-84ad-c4988e87293f\",\n    \"description\": \"rule description updated\",\n    \"priority\": 1000,\n    \"listForNumberA\": [\n      \"79993333333\"\n    ],\n    \"typeOperationA\": \"include\",\n    \"listForNumberB\": [\n      \"79993333331\", \"79993333337\"\n    ],\n    \"typeOperationB\": \"include\",\n    \"typeOperationCount\": \">\",\n    \"targetCount\": 10,\n    \"valueIsTrue\": true,\n    \"typeOperationAB\": \"OR\",\n    \"typeOperationABCount\": \"OR\",\n    \"lock\": \"{{lockRule}}\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://{{hostApp}}:{{portApp}}/v1/rule/update",
+					"protocol": "http",
+					"host": [
+						"{{hostApp}}"
+					],
+					"port": "{{portApp}}",
+					"path": [
+						"v1",
+						"rule",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delete rule\", function () {",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Deleted rule\", function () {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.result).to.eql(\"success\");",
+							"    pm.expect(responseJson.errors).to.eql(null);",
+							"    pm.expect(responseJson.requestId).to.eql(\"54321\");",
+							"    pm.expect(responseJson.responseType).to.eql(\"delete\");",
+							"    pm.expect(responseJson.rule.description).to.eql(\"rule description updated\");",
+							"    pm.expect(responseJson.rule.userId).to.eql(\"operator-1\");",
+							"    pm.expect(responseJson.permissions).to.eql(Array[\"read\", \"update\", \"delete\"]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"requestType\": \"delete\",\n  \"requestId\": \"54321\",\n  \"debug\": {\n    \"mode\": \"prod\"\n  },\n  \"rule\": {\n    \"id\": \"{{idCreatedRule}}\",\n    \"lock\": \"{{lockRule}}\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://{{hostApp}}:{{portApp}}/v1/rule/delete",
+					"protocol": "http",
+					"host": [
+						"{{hostApp}}"
+					],
+					"port": "{{portApp}}",
+					"path": [
+						"v1",
+						"rule",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Search rules\", function () {",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Searched rule\", function () {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.result).to.eql(\"success\");",
+							"    pm.expect(responseJson.errors).to.eql(null);",
+							"    pm.expect(responseJson.requestId).to.eql(\"543212345\");",
+							"    pm.expect(responseJson.responseType).to.eql(\"search\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"requestType\": \"search\",\n  \"requestId\": \"543212345\",\n  \"debug\": {\n    \"mode\": \"prod\"\n  },\n  \"ruleFilter\": {\n    \"searchString\": \"rule\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://{{hostApp}}:{{portApp}}/v1/rule/search",
+					"protocol": "http",
+					"host": [
+						"{{hostApp}}"
+					],
+					"port": "{{portApp}}",
+					"path": [
+						"v1",
+						"rule",
+						"search"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"tests[\"[INFO] Request: \" + (('data' in request) ? request['data'] : '') ] = true;",
+					"tests[\"[INFO] Response: \" + responseBody] = true;"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "portKeycloak",
+			"value": "8081"
+		},
+		{
+			"key": "hostKeycloak",
+			"value": "localhost"
+		},
+		{
+			"key": "hostApp",
+			"value": "localhost"
+		},
+		{
+			"key": "portApp",
+			"value": "8080"
+		},
+		{
+			"key": "authToken",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "idCreatedRule",
+			"value": ""
+		},
+		{
+			"key": "lockRule",
+			"value": ""
+		}
+	]
+}

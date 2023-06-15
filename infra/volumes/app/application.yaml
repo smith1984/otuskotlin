@@ -16,17 +16,16 @@ vafs:
       schema: "backoffice"
       url: "$POSTGRES_URL:jdbc:postgresql://localhost:5432/vafs"
       user: "$POSTGRES_USER:vafs"
-jwt:
-  secret: "secret"
-  issuer: "beeline"
-  audience: "rule-users"
-  realm: "vafs-rules"
-  clientId: "beeline-vafs-service"
-
 #jwt:
-#  issuer: "http://localhost:8081/auth/realms/beeline-vafs"
+#  secret: "secret"
+#  issuer: "beeline"
 #  audience: "rule-users"
-#  realm: "beeline-vafs"
+#  realm: "vafs-rules"
 #  clientId: "beeline-vafs-service"
-#  certUrl: "http://localhost:8081/auth/realms/beeline-vafs/protocol/openid-connect/certs"
 
+jwt:
+  issuer: "$KC_ISSUER:http://localhost:8081/realms/beeline-vafs"
+  audience: "rule-users"
+  realm: "beeline-vafs"
+  clientId: "beeline-vafs-service"
+  certUrl: "$KC_CERT_URL:http://localhost:8081/realms/beeline-vafs/protocol/openid-connect/certs"

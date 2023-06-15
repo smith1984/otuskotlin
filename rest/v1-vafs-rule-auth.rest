@@ -1,0 +1,46 @@
+### Token by password
+POST http://localhost:8081/realms/beeline-vafs/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=beeline-vafs-service&grant_type=password&username=operator-1&password=vafs
+
+> {% client.global.set("auth_token", response.body.access_token);
+    client.global.set("refresh_token", response.body.refresh_token); %}
+
+### Token by refresh token
+POST http://localhost:8081/realms/beeline-vafs/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=beeline-vafs-service&grant_type=refresh_token&refresh_token={{refresh_token}}
+
+### Create
+POST http://127.0.0.1:8080/v1/rule/create
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+//Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjU25GQ2dxWE9nVzRteWVUVm5CTVhHR1NVeldpdW14N2Fjc2FmZU5VVlpzIn0.eyJleHAiOjE2ODY0MTQ5NjEsImlhdCI6MTY4NjQxNDY2MSwianRpIjoiZWNjNjkzMmYtMDkxMC00YzU2LWFjNzEtMjg3NDcwNWYzMWQ0IiwiaXNzIjoiaHR0cDovL2tleWNsb2FrOjgwODAvcmVhbG1zL2JlZWxpbmUtdmFmcyIsImF1ZCI6InJ1bGUtdXNlcnMiLCJzdWIiOiJvcGVyYXRvci0xIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYmVlbGluZS12YWZzLXNlcnZpY2UiLCJzZXNzaW9uX3N0YXRlIjoiMmM0MzQ0NTEtNDY5ZS00ODM2LTkxZGQtNjJiMjc5N2VhY2I2Iiwic2NvcGUiOiJWQUZTIiwic2lkIjoiMmM0MzQ0NTEtNDY5ZS00ODM2LTkxZGQtNjJiMjc5N2VhY2I2IiwiZ3JvdXBzIjpbIlRFU1QiLCJVU0VSIl19.PVC8DIG1IPICi20nq8fkqCAyzv2gh2ur3XyWRRO7PrzopR_IYLAk9Zaph8bn22OLWW5KGvamLAn_PbpPuY5yJ4hqOp7k7UKkjegvDu749GNKbPjEglOw6YgjyDnlVRQqEpz951OeI_bFoU-gy-ryyp9SgOqbRpGsEQGOS5zRjZ9S8iMMYOZqlSC2ogyfAEIqXtVhaZbhvJs8CY1ptRD8wi0IjVZtXiOT7pfGE6JlAkDwWeyfhOOHwk_XO3LY4sACxs6Kk0Vg4t_IARTCchjuWE2SbCNR1O-aJx_laEHJIHEIpYUre6NuV8glGGi39C50CGh6bf0tjL1d6zHYxHXhpw
+
+{
+  "requestType": "create",
+  "requestId": "123",
+  "debug": {
+    "mode": "prod"
+  },
+  "rule": {
+    "userId": "00e2567b-51d7-4d73-84ad-c4988e87293f",
+    "description": "rule description",
+    "priority": 1000,
+    "listForNumberA": [
+      "79993333333"
+    ],
+    "typeOperationA": "include",
+    "listForNumberB": [
+      "79993333331", "79993333337"
+    ],
+    "typeOperationB": "include",
+    "typeOperationCount": ">",
+    "targetCount": 10,
+    "valueIsTrue": true,
+    "typeOperationAB": "OR",
+    "typeOperationABCount": "OR"
+  }
+}

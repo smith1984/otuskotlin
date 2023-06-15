@@ -1,6 +1,6 @@
 openapi: 3.0.4
 info:
-  title: "Voice antifraud system ${VERSION_APP}"
+  title: "Voice antifraud system {VERSION_APP}"
   description: This is a place where operator works with rules
   license:
     name: Apache 2.0
@@ -158,10 +158,6 @@ components:
       type: object
       description: Базовый интерфейс для всех ответов
       properties:
-        responseType:
-          type: string
-          description: Поле-дискриминатор для вычисления типа запроса
-          example: create
         requestId:
           type: string
           description: Идентификатор запроса для отладки

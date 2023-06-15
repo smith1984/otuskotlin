@@ -59,6 +59,9 @@ dependencies {
     implementation(ktor("default-headers"))
     implementation(ktor("websockets"))
     implementation(ktor("config-yaml"))
+    implementation(ktor("swagger"))
+    implementation(ktor("openapi"))
+
 
     implementation(project(":m4-hw6-vafs-lib-logging-logback"))
     implementation("com.sndyuk:logback-more-appenders:$logbackAppendersVersion")
@@ -81,4 +84,16 @@ dependencies {
     testImplementation(ktor("test-host"))
     testImplementation(project(":m5-hw7-vafs-repo-tests"))
 
+}
+
+tasks {
+    @Suppress("UnstableApiUsage")
+    withType<ProcessResources>().configureEach {
+        from("$rootDir/specs") {
+            into("specs")
+            filter {
+                it.replace("{VERSION_APP}", project.version.toString())
+            }
+        }
+    }
 }

@@ -8,16 +8,29 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import org.junit.Test
 import ru.beeline.api.v1.models.*
+import ru.beeline.vafs.common.VafsCorSettings
+import ru.beeline.vafs.ktor.VafsAppSettings
 import ru.beeline.vafs.ktor.config.KtorAuthConfig
+import ru.beeline.vafs.ktor.module
 import ru.otus.otuskotlin.marketplace.app.ru.otus.otuskotlin.marketplace.auth.addAuth
 import kotlin.test.assertEquals
 
 class V1RuleStubApiTest {
     @Test
     fun create() = testApplication {
+
+        environment {
+            config = ApplicationConfig("application_without_module.yaml")
+        }
+
+        application {
+            module(VafsAppSettings(corSettings = VafsCorSettings(), auth = KtorAuthConfig.TEST))
+        }
+
         val client = myClient()
 
         val response = client.post("/v1/rule/create") {
@@ -53,6 +66,15 @@ class V1RuleStubApiTest {
 
     @Test
     fun read() = testApplication {
+
+        environment {
+            config = ApplicationConfig("application_without_module.yaml")
+        }
+
+        application {
+            module(VafsAppSettings(corSettings = VafsCorSettings(), auth = KtorAuthConfig.TEST))
+        }
+
         val client = myClient()
 
         val response = client.post("/v1/rule/read") {
@@ -75,6 +97,15 @@ class V1RuleStubApiTest {
 
     @Test
     fun update() = testApplication {
+
+        environment {
+            config = ApplicationConfig("application_without_module.yaml")
+        }
+
+        application {
+            module(VafsAppSettings(corSettings = VafsCorSettings(), auth = KtorAuthConfig.TEST))
+        }
+
         val client = myClient()
 
         val response = client.post("/v1/rule/update") {
@@ -110,6 +141,15 @@ class V1RuleStubApiTest {
 
     @Test
     fun delete() = testApplication {
+
+        environment {
+            config = ApplicationConfig("application_without_module.yaml")
+        }
+
+        application {
+            module(VafsAppSettings(corSettings = VafsCorSettings(), auth = KtorAuthConfig.TEST))
+        }
+
         val client = myClient()
 
         val response = client.post("/v1/rule/delete") {
@@ -134,6 +174,15 @@ class V1RuleStubApiTest {
 
     @Test
     fun search() = testApplication {
+
+        environment {
+            config = ApplicationConfig("application_without_module.yaml")
+        }
+
+        application {
+            module(VafsAppSettings(corSettings = VafsCorSettings(), auth = KtorAuthConfig.TEST))
+        }
+
         val client = myClient()
 
         val response = client.post("/v1/rule/search") {
