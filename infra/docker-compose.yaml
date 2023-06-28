@@ -63,7 +63,7 @@ services:
     hostname: keycloak
     image: quay.io/keycloak/keycloak:21.1.1
     command:
-      - start-dev
+      - start-dev --hostname-url=http://keycloak:8080 --hostname-strict-backchannel=true
     env_file:
       - .env_keycloak
     ports:
