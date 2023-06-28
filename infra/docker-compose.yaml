@@ -6,8 +6,8 @@ services:
       - /bin/sh
       - -c
       - |
-        echo "sleep for 15 sec"
-        sleep 15
+        echo "sleep for 30 sec"
+        sleep 30
     depends_on:
       - backoffice-app
 
