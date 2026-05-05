@@ -33,6 +33,8 @@ class BizValidationUpdateTest {
     @Test fun trimDescription() = validationDescriptionTrim(command, processor, stub)
     @Test fun emptyDescription() = validationDescriptionEmpty(command, processor, stub)
     @Test fun badSymbolsDescription() = validationDescriptionSymbols(command, processor, stub)
+    @Test fun descriptionAtMaxLength() = validationDescriptionLengthAtUpperBound(command, processor, stub)
+    @Test fun descriptionOverMaxLength() = validationDescriptionLengthOverUpperBound(command, processor, stub)
 
     @Test fun correctPriority() = validationPriorityCorrect(command, processor, stub)
     @Test fun emptyPriority() = validationPriorityEmpty(command, processor, stub)

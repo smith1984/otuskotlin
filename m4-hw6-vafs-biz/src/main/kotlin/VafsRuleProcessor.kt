@@ -54,6 +54,7 @@ class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings(
 
                     validateDescriptionNotEmpty("Проверка, что описание не пусто")
                     validateDescriptionHasContent("Проверка символов")
+                    validateDescriptionLengthLessUpperBound("Проверка, что описание не превышает верхнюю границу длины")
                     validatePriorityNotEqualZero("Проверка, что приоритет не равен 0")
                     validatePriorityLessUpperBound("Проверка, что приоритет меньше верхней границы")
                     validatePriorityMoreLowerBound("Проверка, что приоритет больше нижней границы")
@@ -149,6 +150,7 @@ class VafsRuleProcessor(private val settings: VafsCorSettings = VafsCorSettings(
                     validateLockProperFormat("Проверка формата lock")
                     validateDescriptionNotEmpty("Проверка на непустое описание")
                     validateDescriptionHasContent("Проверка на наличие содержания в описании")
+                    validateDescriptionLengthLessUpperBound("Проверка, что описание не превышает верхнюю границу длины")
                     validatePriorityNotEqualZero("Проверка, что приоритет не равен 0")
                     validatePriorityLessUpperBound("Проверка, что приоритет меньше верхней границы")
                     validatePriorityMoreLowerBound("Проверка, что приоритет больше нижней границы")
